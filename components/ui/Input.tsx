@@ -4,11 +4,13 @@
  */
 
 import { InputHTMLAttributes, ReactNode, forwardRef } from 'react';
+import { InfoTooltip } from './Tooltip';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
   helperText?: string;
+  tooltip?: string;
   leftIcon?: ReactNode;
   rightIcon?: ReactNode;
   fullWidth?: boolean;
@@ -20,6 +22,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       label,
       error,
       helperText,
+      tooltip,
       leftIcon,
       rightIcon,
       fullWidth = false,
@@ -51,9 +54,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="flex items-center gap-1 text-sm font-medium text-gray-700 mb-1"
           >
-            {label}
+            <span>{label}</span>
+            {tooltip && <InfoTooltip content={tooltip} />}
           </label>
         )}
 

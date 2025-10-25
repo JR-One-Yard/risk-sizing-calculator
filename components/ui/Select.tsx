@@ -4,6 +4,7 @@
  */
 
 import { SelectHTMLAttributes, ReactNode, forwardRef } from 'react';
+import { InfoTooltip } from './Tooltip';
 
 export interface SelectOption {
   value: string;
@@ -14,6 +15,7 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   error?: string;
   helperText?: string;
+  tooltip?: string;
   options: SelectOption[];
   placeholder?: string;
   fullWidth?: boolean;
@@ -25,6 +27,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
       label,
       error,
       helperText,
+      tooltip,
       options,
       placeholder,
       fullWidth = false,
@@ -51,9 +54,10 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label
             htmlFor={selectId}
-            className="block text-sm font-medium text-gray-700 mb-1"
+            className="flex items-center gap-1 text-sm font-medium text-gray-700 mb-1"
           >
-            {label}
+            <span>{label}</span>
+            {tooltip && <InfoTooltip content={tooltip} />}
           </label>
         )}
 

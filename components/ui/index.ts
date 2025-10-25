@@ -17,3 +17,12 @@ export type { SelectProps, SelectOption } from './Select';
 
 export { Badge } from './Badge';
 export type { BadgeProps } from './Badge';
+
+export { Modal } from './Modal';
+export type { ModalProps } from './Modal';
+
+export { Tooltip, InfoTooltip } from './Tooltip';
+export type { TooltipProps } from './Tooltip';
+
+export { ButtonGroup } from './ButtonGroup';
+export type { ButtonGroupProps, ButtonGroupOption } from './ButtonGroup';

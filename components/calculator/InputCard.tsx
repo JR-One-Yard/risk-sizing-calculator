@@ -5,10 +5,12 @@
 
 'use client';
 
-import { Card, CardHeader, CardTitle, CardContent, Input, Select } from '@/components/ui';
+import { Card, CardHeader, CardTitle, CardContent, Input, Select, ButtonGroup, InfoTooltip } from '@/components/ui';
 import { useRiskSizingStore } from '@/lib/store';
 import { VolatilityClass } from '@/types/volatility';
 import type { ConvictionType } from '@/types/calculator';
+import { TOOLTIPS } from '@/lib/content';
+import type { ButtonGroupOption } from '@/components/ui';
 
 export function InputCard() {
   const inputs = useRiskSizingStore((state) => state.inputs);
@@ -28,13 +30,43 @@ export function InputCard() {
     { value: 'position', label: 'Position Trade' },
   ];
 
-  // Volatility options
-  const volatilityOptions = [
-    { value: VolatilityClass.ULTRA_LOW, label: 'Ultra Low (<20%)' },
-    { value: VolatilityClass.LOW, label: 'Low (20-40%)' },
-    { value: VolatilityClass.MEDIUM, label: 'Medium (40-60%)' },
-    { value: VolatilityClass.HIGH, label: 'High (60-100%)' },
-    { value: VolatilityClass.ULTRA_HIGH, label: 'Ultra High (>100%)' },
+  // Volatility options with traffic light colors
+  const volatilityOptions: ButtonGroupOption[] = [
+    {
+      value: VolatilityClass.ULTRA_LOW,
+      label: 'Ultra Low',
+      shortLabel: 'Ultra Low',
+      description: '<20%',
+      color: 'blue'
+    },
+    {
+      value: VolatilityClass.LOW,
+      label: 'Low',
+      shortLabel: 'Low',
+      description: '20-30%',
+      color: 'green'
+    },
+    {
+      value: VolatilityClass.MEDIUM,
+      label: 'Medium',
+      shortLabel: 'Medium',
+      description: '30-50%',
+      color: 'yellow'
+    },
+    {
+      value: VolatilityClass.HIGH,
+      label: 'High',
+      shortLabel: 'High',
+      description: '50-80%',
+      color: 'orange'
+    },
+    {
+      value: VolatilityClass.ULTRA_HIGH,
+      label: 'Ultra High',
+      shortLabel: 'Ultra High',
+      description: '>80%',
+      color: 'red'
+    },
   ];
 
   const handleNumberChange = (field: keyof typeof inputs, value: string) => {
@@ -65,6 +97,7 @@ export function InputCard() {
                 value={inputs.freeCapital}
                 onChange={(e) => handleNumberChange('freeCapital', e.target.value)}
                 placeholder="100000"
+                tooltip={TOOLTIPS.freeCapital}
                 helperText="Total capital available for trading"
               />
               <Input
@@ -73,6 +106,7 @@ export function InputCard() {
                 value={inputs.ytdPnL}
                 onChange={(e) => handleNumberChange('ytdPnL', e.target.value)}
                 placeholder="0"
+                tooltip={TOOLTIPS.ytdPnL}
                 helperText="Year-to-date profit/loss (can be negative)"
               />
             </div>
@@ -89,20 +123,24 @@ export function InputCard() {
                 value={inputs.conviction}
                 onChange={(e) => updateInputs({ conviction: e.target.value as ConvictionType })}
                 options={convictionOptions}
+                tooltip={TOOLTIPS.conviction}
                 helperText="Higher conviction = larger position size"
               />
-              <Select
+              <ButtonGroup
                 label="Volatility Class"
                 value={inputs.volatilityClass}
-                onChange={(e) => updateInputs({ volatilityClass: e.target.value as VolatilityClass })}
+                onChange={(value) => updateInputs({ volatilityClass: value as VolatilityClass })}
                 options={volatilityOptions}
+                tooltip={TOOLTIPS.volatilityClass}
                 helperText="Higher volatility = smaller position size"
+                fullWidth
               />
               <Select
                 label="Time Horizon"
                 value={inputs.timeHorizon}
                 onChange={(e) => updateInputs({ timeHorizon: e.target.value as 'day' | 'swing' | 'position' })}
                 options={timeHorizonOptions}
+                tooltip={TOOLTIPS.timeHorizon}
                 helperText="Expected trade duration"
               />
             </div>
@@ -121,6 +159,7 @@ export function InputCard() {
                 onChange={(e) => handleNumberChange('entryPrice', e.target.value)}
                 placeholder="100.00"
                 step="0.01"
+                tooltip={TOOLTIPS.entryPrice}
               />
               <Input
                 label="Stop Loss"
@@ -129,6 +168,7 @@ export function InputCard() {
                 onChange={(e) => handleNumberChange('stopLoss', e.target.value)}
                 placeholder="95.00"
                 step="0.01"
+                tooltip={TOOLTIPS.stopLoss}
                 helperText="Exit price if trade goes against you"
               />
             </div>
@@ -155,6 +195,7 @@ export function InputCard() {
                 onChange={(e) => handleNumberChange('slippage', e.target.value)}
                 placeholder="0"
                 step="0.01"
+                tooltip={TOOLTIPS.slippage}
                 helperText="Additional price buffer for execution (in price units)"
               />
               <Input
@@ -164,6 +205,7 @@ export function InputCard() {
                 onChange={(e) => handleNumberChange('instrumentMultiplier', e.target.value)}
                 placeholder="1"
                 step="1"
+                tooltip={TOOLTIPS.instrumentMultiplier}
                 helperText="Contract multiplier (1 for stocks, varies for futures/options)"
               />
               <Input
@@ -176,6 +218,7 @@ export function InputCard() {
                 }}
                 placeholder="Optional"
                 step="0.01"
+                tooltip={TOOLTIPS.customATR}
                 helperText="Average True Range for volatility analysis"
               />
               <Input
@@ -187,6 +230,7 @@ export function InputCard() {
                   updateInputs({ monthlyStopLoss: val ? parseFloat(val) : undefined });
                 }}
                 placeholder="Optional"
+                tooltip={TOOLTIPS.monthlyStopLoss}
                 helperText="Monthly loss limit for risk cap calculations"
               />
             </div>

@@ -95,4 +95,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Animations */
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
 /* Remove dark mode for now - we'll add it in Phase 2 */
