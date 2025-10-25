@@ -7,6 +7,7 @@
 
 import { InputCard } from '@/components/calculator/InputCard';
 import { OutputCard } from '@/components/calculator/OutputCard';
+import { VolatilityImpactCard } from '@/components/calculator/VolatilityImpactCard';
 
 export default function CalculatorPage() {
   return (
@@ -28,7 +29,11 @@ export default function CalculatorPage() {
           <InputCard />
 
           {/* Right Column: Outputs */}
-          <OutputCard />
+          <div className="space-y-6">
+            <OutputCard />
+            {/* NEW v2 Feature: Volatility Impact Visualization */}
+            <VolatilityImpactCard />
+          </div>
         </div>
       </div>
     </main>
