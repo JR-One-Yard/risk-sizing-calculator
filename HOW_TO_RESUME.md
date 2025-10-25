@@ -17,17 +17,17 @@ cd "/Users/jamesroberts/Desktop/Projects Collection/Projects/Risk-Sizing-Calcula
 ### 2. Say exactly this:
 
 ```
-"I'm working on the Risk Sizing Tool v2. I completed Day 1 setup.
-Please read DAY_1_SUMMARY.md and continue with Day 2 - building
-the calculation engine with volatility features. Reference the
-FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md for the plan."
+"I'm working on the Risk Sizing Tool v2. I completed Days 1-4.
+Please check git log and tell me the current state. The calculator
+is fully functional with volatility-adjusted position sizing.
+What should we work on next?"
 ```
 
 ### 3. Claude will:
-- Read your Day 1 summary
-- Understand current project state
-- Continue from exactly where you left off
-- Follow the implementation guide
+- Review git commits to see progress
+- Check current implementation state
+- Understand what's working
+- Suggest next steps (polish, features, or refinements)
 
 ---
 
@@ -55,43 +55,93 @@ FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md for the plan."
 
 ## 📖 Key Files to Know About
 
-### In NEW Project (risk-sizing-v2):
+### In NEW Project (Risk-Sizing-Calculator):
 
 **Your Progress:**
-- `DAY_1_SUMMARY.md` - What you've completed
 - `HOW_TO_RESUME.md` - This file (resume instructions)
-- Git history: `git log --oneline` to see commits
+- Git history: `git log --oneline` to see all commits
+- Dev server: http://localhost:3001 (when running)
 
 **Implementation Guides (in Sizing Tool/docs):**
 - `../Sizing Tool/docs/implementation-guides/FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md` - Complete roadmap
 - `../Sizing Tool/docs/analysis/START_FRESH_VS_CONTINUE_ANALYSIS.md` - Why we started fresh
-- `../Sizing Tool/docs/analysis/DECISION_FRAMEWORK.md` - Decision rationale
 - `../Sizing Tool/docs/design-specs/FRESH_IMPLEMENTATION_UX_DESIGN.md` - UI/UX design
 - `../Sizing Tool/docs/design-specs/RISK_MANAGEMENT_SPECIFICATIONS.md` - Risk calculations
 
 **Your Code:**
+
+*Types & Constants:*
 - `types/calculator.ts` - Type definitions (CORRECT conviction labels!)
-- `types/volatility.ts` - Volatility framework
+- `types/volatility.ts` - Volatility framework with 5 classes
 - `lib/constants.ts` - Defaults and constants
-- `app/globals.css` - Design system
+
+*Calculation Engine:*
+- `lib/calculator/calculations.ts` - Complete calculation engine
+- `lib/calculator/index.ts` - Public API
+
+*State Management:*
+- `lib/store.ts` - Zustand store with LocalStorage persistence
+- `lib/schemas.ts` - Zod validation schemas
+
+*UI Components:*
+- `components/ui/` - Design system primitives (Card, Button, Input, Select, Badge)
+- `components/calculator/InputCard.tsx` - Trade setup form
+- `components/calculator/OutputCard.tsx` - Results display
+- `components/calculator/VolatilityImpactCard.tsx` - NEW v2 feature (volatility visualization)
+
+*Tests:*
+- `lib/calculator/__tests__/` - 59 calculation tests
+- `lib/__tests__/schemas.test.ts` - 59 validation tests
 
 ---
 
-## 🎯 Current Status (Day 1 Complete)
+## 🎯 Current Status (Day 4 COMPLETE!)
 
-✅ **Completed:**
-- Project setup with Next.js 14
-- TypeScript types (calculator + volatility)
+✅ **Day 1 - Project Setup:**
+- Next.js 14 with TypeScript
+- Tailwind CSS v4 design system
+- Type definitions (calculator + volatility)
 - Constants and defaults
-- Design system (Tailwind CSS)
 - Git repository initialized
-- Testing infrastructure ready
 
-⏳ **Next (Day 2):**
-- Build calculation engine
-- Implement position sizing with volatility
-- Add risk cap logic
-- Create unit tests
+✅ **Day 2 - Calculation Engine:**
+- Core position sizing calculations
+- Conviction-based risk allocation (Type I/II/III)
+- YTD P&L scaling (Kelly Criterion)
+- Volatility-adjusted position sizing (5 classes)
+- Hierarchical risk caps
+- ATR analysis
+- R-multiple calculations
+- 59 calculation tests (all passing)
+
+✅ **Day 3 - State Management:**
+- Zod validation schemas
+- Zustand store with middleware
+- LocalStorage persistence (versioned)
+- Auto-calculation on input changes
+- Optimized selectors
+- 59 schema validation tests (all passing)
+
+✅ **Day 4 - UI Components:**
+- Design system primitives (Card, Button, Input, Select, Badge)
+- InputCard component (full trade setup form)
+- OutputCard component (comprehensive results)
+- VolatilityImpactCard (NEW v2 feature - educational visualization)
+- Full Zustand integration
+- Auto-calculation working
+- Production build passing
+
+**Total Tests:** 118/118 passing ✅
+**Build Status:** Production build passing ✅
+**Dev Server:** Running on http://localhost:3001 ✅
+
+⏳ **Next Steps (Day 5+):**
+- Polish and refinements
+- Mobile optimization
+- Additional features (trade history, policy settings)
+- Performance optimization
+- Accessibility improvements
+- Documentation
 
 ---
 
@@ -104,42 +154,53 @@ git log --oneline
 ```
 
 You should see:
-- Initial project setup commit
-- Day 1 summary commit
+- Day 4 Complete: Add VolatilityImpactCard (NEW v2 feature)
+- Day 4: Add InputCard and OutputCard components
+- Day 4: UI components and TypeScript fixes
+- Day 3 Complete: State management with Zustand + Zod validation
+- Day 2 Complete: Calculation engine with 59 passing tests
+- Day 1: Complete project setup with types and constants
+- Initial commit
 
-### Check files created:
+### Run the dev server:
 ```bash
-ls -la types/
-ls -la lib/
+npm run dev
 ```
 
-You should have:
-- `types/calculator.ts`
-- `types/volatility.ts`
-- `lib/constants.ts`
+Should start on http://localhost:3001 (or 3000 if available)
 
-### Check what's NOT created yet:
+### Run tests:
 ```bash
-ls lib/calculator/
+npm test
 ```
 
-Should be empty (Day 2 work)
+Should show 118 tests passing
+
+### Build for production:
+```bash
+npm run build
+```
+
+Should complete successfully
 
 ---
 
 ## 💡 Different Resume Scenarios
 
 ### Scenario 1: Lost chat, same session
-**Say:** "I'm resuming work on Risk Sizing Tool v2. Read DAY_1_SUMMARY.md and continue with Day 2."
+**Say:** "I'm resuming Risk Sizing Tool v2. Show me `git log --oneline` and tell me what's completed."
 
 ### Scenario 2: Computer restarted, new day
-**Say:** "I'm working on Risk Sizing Tool v2. I completed Day 1 (check DAY_1_SUMMARY.md). What's the status and what should I do next?"
+**Say:** "I'm working on Risk Sizing Tool v2. Days 1-4 are complete. Check git commits and tell me the current state."
 
 ### Scenario 3: Week later, forgot where you were
-**Say:** "I'm resuming Risk Sizing Tool v2 after a break. Please review my git commits, DAY_1_SUMMARY.md, and tell me what's completed and what's next."
+**Say:** "I'm resuming Risk Sizing Tool v2 after a break. Please review git commits and tell me what's done and what's next."
 
-### Scenario 4: Want to jump to specific day
-**Say:** "I'm on Risk Sizing Tool v2. I've completed Day 1-2. Please help me with Day 3 - [specific feature]."
+### Scenario 4: Want to add new features
+**Say:** "Risk Sizing Tool v2 has a working calculator (Days 1-4 done). I want to add [specific feature]. What do you suggest?"
+
+### Scenario 5: Want to test it out
+**Say:** "Start the dev server for Risk Sizing Tool v2 and let me test the calculator."
 
 ---
 
@@ -147,21 +208,34 @@ Should be empty (Day 2 work)
 
 ### Minimum Information:
 1. "I'm working on Risk Sizing Tool v2"
-2. "Please read DAY_1_SUMMARY.md"
-3. "Continue with [next task]"
+2. "Days 1-4 are complete"
+3. "What should we work on next?" OR "I want to add [feature]"
 
 ### More Context (if needed):
-1. Current directory: risk-sizing-v2
-2. What day you're on
-3. What you just completed
-4. What you want to do next
+1. Current directory: Risk-Sizing-Calculator
+2. What you want to build/fix/improve
+3. Any issues you're encountering
 
-### Example Good Prompt:
+### Example Good Prompts:
+
+**For Resuming:**
 ```
-"I'm working on Risk Sizing Tool v2 in the risk-sizing-v2 directory.
-I just completed Day 1 (project setup - check DAY_1_SUMMARY.md).
-I'm ready to start Day 2: building the calculation engine with
-volatility features. Please follow the FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md."
+"I'm working on Risk Sizing Tool v2 in Risk-Sizing-Calculator directory.
+Days 1-4 are complete (calculator is working). Please check git log
+and tell me the current state. What polish or features should we add next?"
+```
+
+**For New Features:**
+```
+"Risk Sizing Tool v2 calculator is working (Days 1-4 done). I want to add
+[trade history / policy settings / mobile optimization / etc.].
+What's the best approach?"
+```
+
+**For Debugging:**
+```
+"Risk Sizing Tool v2 - the calculator is built but I'm seeing [issue].
+Can you help debug? Run the dev server if needed."
 ```
 
 ---
@@ -179,10 +253,16 @@ Projects/
 │       └── analysis/
 │
 └── Risk-Sizing-Calculator/       # NEW - Your main project ←
-    ├── DAY_1_SUMMARY.md          # ← Your progress
     ├── HOW_TO_RESUME.md          # ← This file
-    ├── types/                    # ← Your types
-    ├── lib/                      # ← Your code
+    ├── types/                    # ← Type definitions
+    ├── lib/                      # ← Calculation engine & state
+    │   ├── calculator/           # ← Position sizing logic
+    │   ├── schemas.ts            # ← Zod validation
+    │   └── store.ts              # ← Zustand state management
+    ├── components/               # ← UI components
+    │   ├── ui/                   # ← Design system primitives
+    │   └── calculator/           # ← Calculator-specific components
+    ├── app/                      # ← Next.js pages
     └── ...
 ```
 
@@ -193,9 +273,14 @@ Projects/
 When resuming, Claude needs to know:
 
 1. **Project:** Risk Sizing Tool v2 (position sizing calculator for traders)
-2. **Stage:** Fresh start, building from scratch with volatility features
-3. **Architecture:** Next.js 14, TypeScript, Tailwind, Zustand, Zod
-4. **Progress:** Day 1 complete (setup), ready for Day 2 (calculation engine)
+2. **Stage:** Working calculator with volatility features (Days 1-4 complete)
+3. **Architecture:** Next.js 14, TypeScript, Tailwind CSS, Zustand, Zod
+4. **Progress:**
+   - ✅ Calculation engine working
+   - ✅ State management with persistence
+   - ✅ Full UI (InputCard, OutputCard, VolatilityImpactCard)
+   - ✅ 118 tests passing
+   - ✅ Production build passing
 5. **Key Feature:** Volatility-adjusted position sizing (5 classification levels)
 6. **Critical Detail:** Conviction types are CORRECT (I=High, II=Medium, III=Low)
 
@@ -204,26 +289,29 @@ When resuming, Claude needs to know:
 ## ⚠️ Common Mistakes to Avoid
 
 ❌ **DON'T** open Claude in the old `risk-sizing-app` directory
-✅ **DO** open Claude in the new `risk-sizing-v2` directory
+✅ **DO** open Claude in the new `Risk-Sizing-Calculator` directory
 
 ❌ **DON'T** say "continue where we left off" (too vague)
-✅ **DO** say "read DAY_1_SUMMARY.md and continue with Day 2"
+✅ **DO** say "check git log and show me what's completed"
 
-❌ **DON'T** forget to mention you're working on v2
-✅ **DO** specify "Risk Sizing Tool v2"
+❌ **DON'T** forget we're on v2 with volatility features
+✅ **DO** specify "Risk Sizing Tool v2" with volatility
 
 ---
 
 ## 🔧 If Things Go Wrong
 
 ### Claude seems confused?
-**Say:** "Please list all files in the current directory and check DAY_1_SUMMARY.md to understand the project state."
+**Say:** "Please run `git log --oneline` and `npm test` to verify the project state."
 
 ### Not sure what's been done?
-**Say:** "Run `git log --oneline` and show me what commits exist. Then read DAY_1_SUMMARY.md."
+**Say:** "List recent git commits and show me what components exist in components/calculator/"
 
 ### Want to verify everything?
-**Say:** "Please verify: 1) We're in risk-sizing-v2 directory, 2) Day 1 is complete (check summary), 3) What should we do next?"
+**Say:** "Please verify: 1) We're in Risk-Sizing-Calculator directory, 2) Run `npm test` to check tests, 3) Show git log"
+
+### Dev server won't start?
+**Say:** "Try running `npm run dev` and show me any errors."
 
 ---
 
@@ -237,12 +325,11 @@ Current directory should be:
 /Users/jamesroberts/Desktop/Projects Collection/Projects/Risk-Sizing-Calculator
 
 Please:
-1. Verify we're in the right directory
-2. List all files in types/ and lib/
-3. Check git log for commits
-4. Read DAY_1_SUMMARY.md
-5. Tell me what's completed and what's next
-6. Reference FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md for the plan"
+1. Verify we're in the right directory (run pwd)
+2. Check git log --oneline (should show Days 1-4 commits)
+3. Run npm test (should show 118 passing)
+4. List components/calculator/ files
+5. Tell me what's completed and suggest next steps"
 ```
 
 ---
@@ -251,11 +338,42 @@ Please:
 
 **Current Project:** Risk-Sizing-Calculator (NEW)
 **Reference Project:** Sizing Tool/risk-sizing-app (OLD)
-**Day Completed:** Day 1 (Setup)
-**Next Day:** Day 2 (Calculation Engine)
-**Progress File:** DAY_1_SUMMARY.md
-**Master Guide:** ../Sizing Tool/docs/implementation-guides/FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md
-**Total Timeline:** 21 days to MVP+
+**Days Completed:** Days 1-4 (Setup → Calculation → State → UI)
+**Status:** ✅ Working calculator with volatility features
+**Tests:** 118/118 passing
+**Build:** Production ready
+**Dev URL:** http://localhost:3001
+**Next:** Polish, features, optimizations
+
+---
+
+## 🎨 What's Built (Quick Overview)
+
+**Calculation Engine:**
+- Position sizing with conviction-based risk (Type I/II/III)
+- YTD P&L scaling (Kelly Criterion inspired)
+- **NEW:** Volatility-adjusted sizing (5 classes: ULTRA_LOW to ULTRA_HIGH)
+- Hierarchical risk caps (Monthly Stop → Type III → Absolute Max)
+- ATR analysis for stop optimization
+- R-multiple calculations
+
+**State Management:**
+- Zustand store with LocalStorage persistence
+- Zod validation for all inputs
+- Auto-calculation on changes
+- Optimized selectors
+
+**UI Components:**
+- Design system (Card, Button, Input, Select, Badge)
+- InputCard (complete trade setup form)
+- OutputCard (comprehensive results display)
+- **NEW:** VolatilityImpactCard (educational visualization showing position size adjustments)
+
+**Quality:**
+- 118 tests passing (59 calculation + 59 validation)
+- TypeScript strict mode
+- Production build passing
+- Responsive design
 
 ---
 
@@ -275,11 +393,12 @@ This file is saved in your project:
 Before you close this chat, test the resume process:
 
 1. Note what directory Claude is in: `pwd`
-2. Close this chat
-3. Reopen Claude Code in risk-sizing-v2
-4. Say: "Read DAY_1_SUMMARY.md and tell me what's completed"
-5. If Claude understands, you're good!
+2. Check git commits: `git log --oneline`
+3. Close this chat
+4. Reopen Claude Code in Risk-Sizing-Calculator
+5. Say: "Show me git log and tell me what's completed"
+6. If Claude shows Days 1-4 commits, you're good!
 
 ---
 
-**You're all set! You can resume from anywhere, anytime.** 🚀
+**You're all set! Calculator is working, 118 tests passing, ready for next features!** 🚀
