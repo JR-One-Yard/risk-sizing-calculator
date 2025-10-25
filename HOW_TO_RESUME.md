@@ -9,10 +9,10 @@
 ### 1. Open Claude Code in the NEW project folder
 
 ```bash
-cd "/Users/jamesroberts/Desktop/Projects Collection/Projects/Sizing Tool/risk-sizing-v2"
+cd "/Users/jamesroberts/Desktop/Projects Collection/Projects/Risk-Sizing-Calculator"
 ```
 
-**Then open Claude Code in THIS directory** (risk-sizing-v2, NOT the old risk-sizing-app)
+**Then open Claude Code in THIS directory** (Risk-Sizing-Calculator, NOT the old Sizing Tool)
 
 ### 2. Say exactly this:
 
@@ -35,7 +35,7 @@ FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md for the plan."
 
 ### NEW Project (Work Here):
 ```
-/Users/jamesroberts/Desktop/Projects Collection/Projects/Sizing Tool/risk-sizing-v2/
+/Users/jamesroberts/Desktop/Projects Collection/Projects/Risk-Sizing-Calculator/
 ```
 **This is where all new development happens.**
 
@@ -44,6 +44,12 @@ FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md for the plan."
 /Users/jamesroberts/Desktop/Projects Collection/Projects/Sizing Tool/risk-sizing-app/
 ```
 **Keep this for reference - working code, proven formulas.**
+
+### Shared Documentation:
+```
+/Users/jamesroberts/Desktop/Projects Collection/Projects/Sizing Tool/docs/
+```
+**Implementation guides, design specs, analysis.**
 
 ---
 
@@ -56,12 +62,12 @@ FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md for the plan."
 - `HOW_TO_RESUME.md` - This file (resume instructions)
 - Git history: `git log --oneline` to see commits
 
-**Implementation Guides (in docs folder):**
-- `../docs/implementation-guides/FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md` - Complete roadmap
-- `../docs/analysis/START_FRESH_VS_CONTINUE_ANALYSIS.md` - Why we started fresh
-- `../docs/analysis/DECISION_FRAMEWORK.md` - Decision rationale
-- `../docs/design-specs/FRESH_IMPLEMENTATION_UX_DESIGN.md` - UI/UX design
-- `../docs/design-specs/RISK_MANAGEMENT_SPECIFICATIONS.md` - Risk calculations
+**Implementation Guides (in Sizing Tool/docs):**
+- `../Sizing Tool/docs/implementation-guides/FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md` - Complete roadmap
+- `../Sizing Tool/docs/analysis/START_FRESH_VS_CONTINUE_ANALYSIS.md` - Why we started fresh
+- `../Sizing Tool/docs/analysis/DECISION_FRAMEWORK.md` - Decision rationale
+- `../Sizing Tool/docs/design-specs/FRESH_IMPLEMENTATION_UX_DESIGN.md` - UI/UX design
+- `../Sizing Tool/docs/design-specs/RISK_MANAGEMENT_SPECIFICATIONS.md` - Risk calculations
 
 **Your Code:**
 - `types/calculator.ts` - Type definitions (CORRECT conviction labels!)
@@ -93,7 +99,7 @@ FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md for the plan."
 
 ### Check git commits:
 ```bash
-cd "/Users/jamesroberts/Desktop/Projects Collection/Projects/Sizing Tool/risk-sizing-v2"
+cd "/Users/jamesroberts/Desktop/Projects Collection/Projects/Risk-Sizing-Calculator"
 git log --oneline
 ```
 
@@ -163,22 +169,21 @@ volatility features. Please follow the FRESH_START_IMPLEMENTATION_MASTER_GUIDE.m
 ## 🗂️ File Organization
 
 ```
-Projects/Sizing Tool/
-├── risk-sizing-app/              # OLD - Keep for reference
-│   └── src/lib/calculations.ts   # ← Reference these formulas!
+Projects/
+├── Sizing Tool/                  # Original project folder
+│   ├── risk-sizing-app/          # OLD - Keep for reference
+│   │   └── src/lib/calculations.ts   # ← Reference these formulas!
+│   └── docs/                     # Shared documentation
+│       ├── implementation-guides/
+│       ├── design-specs/
+│       └── analysis/
 │
-├── risk-sizing-v2/               # NEW - Work here ←
-│   ├── DAY_1_SUMMARY.md          # ← Your progress
-│   ├── HOW_TO_RESUME.md          # ← This file
-│   ├── types/                    # ← Your types
-│   ├── lib/                      # ← Your code
-│   └── ...
-│
-└── Documentation (all .md files): # Implementation guides
-    ├── FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md
-    ├── START_FRESH_VS_CONTINUE_ANALYSIS.md
-    ├── VOLATILITY_AND_ADVANCED_RISK_ROADMAP.md
-    └── Many others...
+└── Risk-Sizing-Calculator/       # NEW - Your main project ←
+    ├── DAY_1_SUMMARY.md          # ← Your progress
+    ├── HOW_TO_RESUME.md          # ← This file
+    ├── types/                    # ← Your types
+    ├── lib/                      # ← Your code
+    └── ...
 ```
 
 ---
@@ -229,7 +234,7 @@ If completely lost, say exactly this:
 ```
 "I'm working on Risk Sizing Tool v2 (fresh implementation with volatility).
 Current directory should be:
-/Users/jamesroberts/Desktop/Projects Collection/Projects/Sizing Tool/risk-sizing-v2
+/Users/jamesroberts/Desktop/Projects Collection/Projects/Risk-Sizing-Calculator
 
 Please:
 1. Verify we're in the right directory
@@ -244,12 +249,12 @@ Please:
 
 ## 🎯 Quick Reference Card
 
-**Current Project:** risk-sizing-v2 (NEW)
-**Reference Project:** risk-sizing-app (OLD)
+**Current Project:** Risk-Sizing-Calculator (NEW)
+**Reference Project:** Sizing Tool/risk-sizing-app (OLD)
 **Day Completed:** Day 1 (Setup)
 **Next Day:** Day 2 (Calculation Engine)
 **Progress File:** DAY_1_SUMMARY.md
-**Master Guide:** FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md
+**Master Guide:** ../Sizing Tool/docs/implementation-guides/FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md
 **Total Timeline:** 21 days to MVP+
 
 ---
@@ -258,7 +263,7 @@ Please:
 
 This file is saved in your project:
 ```
-/Users/jamesroberts/Desktop/Projects Collection/Projects/Sizing Tool/risk-sizing-v2/HOW_TO_RESUME.md
+/Users/jamesroberts/Desktop/Projects Collection/Projects/Risk-Sizing-Calculator/HOW_TO_RESUME.md
 ```
 
 **Bookmark it!** It's your lifeline to resume work anytime.
