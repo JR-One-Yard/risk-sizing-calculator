@@ -104,6 +104,59 @@ export const TIME_HORIZON_OPTIONS = [
 ] as const;
 
 // ============================================================================
+// RISK CAPS
+// ============================================================================
+
+/**
+ * Hierarchical risk caps applied in this order:
+ * 1. Monthly stop portion (highest priority)
+ * 2. Type III hard cap (only for LOW conviction)
+ * 3. Absolute maximum (final safety net)
+ */
+export const RISK_CAPS = {
+  /** Maximum risk per trade as % of Free Capital (5%) */
+  MAX_SINGLE_TRADE: 0.05,
+
+  /** Type III monthly hard cap as % of (FC + positive YTD) (10%) */
+  TYPE_III_MONTHLY: 0.10,
+
+  /** Max portion of monthly stop loss budget per trade (25%) */
+  MONTHLY_STOP_PORTION: 0.25,
+} as const;
+
+// ============================================================================
+// VOLATILITY MULTIPLIERS
+// ============================================================================
+
+/**
+ * Position size multipliers based on volatility classification
+ * Core Principle: Higher volatility = Smaller position for same dollar risk
+ *
+ * Medium (S&P 500 baseline) = 1.0x (no adjustment)
+ * Lower volatility instruments can have larger positions (more predictable stops)
+ * Higher volatility instruments need smaller positions (wider stops required)
+ */
+export const VOLATILITY_MULTIPLIERS: Record<VolatilityClass, number> = {
+  [VolatilityClass.ULTRA_LOW]: 2.0,   // 2x position size (FX majors, Treasuries)
+  [VolatilityClass.LOW]: 1.5,         // 1.5x position size (Blue-chips)
+  [VolatilityClass.MEDIUM]: 1.0,      // Baseline (S&P 500 stocks)
+  [VolatilityClass.HIGH]: 0.5,        // 0.5x position size (Small-caps, BTC)
+  [VolatilityClass.ULTRA_HIGH]: 0.3,  // 0.3x position size (Penny stocks, meme coins)
+};
+
+/**
+ * ATR percentage thresholds for auto-classification
+ * ATR as % of price determines volatility class
+ */
+export const ATR_PERCENTILE_RANGES = {
+  ULTRA_LOW: 0.5,  // < 0.5% daily ATR
+  LOW: 1.5,        // 0.5% - 1.5% daily ATR
+  MEDIUM: 3.0,     // 1.5% - 3.0% daily ATR
+  HIGH: 6.0,       // 3.0% - 6.0% daily ATR
+  // ULTRA_HIGH: > 6.0% daily ATR
+} as const;
+
+// ============================================================================
 // CALCULATION CONSTANTS
 // ============================================================================
 
