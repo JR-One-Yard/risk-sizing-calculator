@@ -10,6 +10,7 @@ import { Card, CardHeader, CardTitle, CardContent, Badge, Button } from '@/compo
 import { useRiskSizingStore } from '@/lib/store';
 import { exportTradePlan } from '@/lib/export';
 import { CalculationBreakdownModal } from './CalculationBreakdownModal';
+import { formatPositionSize } from '@/lib/formatters';
 
 export function OutputCard() {
   const outputs = useRiskSizingStore((state) => state.outputs);
@@ -126,7 +127,7 @@ export function OutputCard() {
               <div className="flex justify-between items-center">
                 <span className="text-sm font-medium text-gray-700">Position Size</span>
                 <span className="text-2xl font-bold text-blue-900">
-                  {formatNumber(outputs.positionSize)} shares
+                  {formatPositionSize(outputs.positionSize, inputs.instrumentType)}
                 </span>
               </div>
               <div className="flex justify-between items-center text-sm">

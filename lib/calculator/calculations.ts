@@ -25,6 +25,7 @@ import type {
   VolatilityAdjustment,
   ATRAnalysis,
 } from '@/types/volatility';
+import type { Direction } from '@/types/instruments';
 import {
   CONVICTION_CONFIGS,
   RISK_CAPS,
@@ -140,16 +141,23 @@ export function calculatePerUnitRisk(
 /**
  * Calculate position size in units (shares/contracts)
  *
+ * SUPPORTS FRACTIONAL POSITIONS: Returns exact fractional size to maintain
+ * precise dollar risk. Examples:
+ * - 0.0065 contracts of NQ futures = exactly $3,000 risk
+ * - 125.5 shares of AAPL = exactly $500 risk
+ *
  * @param dollarRisk - Total dollar risk allocated to this trade
  * @param perUnitRisk - Risk per unit (from calculatePerUnitRisk)
- * @returns Position size in whole units (floored to avoid over-risking)
+ * @returns Position size with fractional precision (NOT floored)
  */
 export function calculatePositionSize(
   dollarRisk: number,
   perUnitRisk: number
 ): number {
   if (perUnitRisk <= 0) return 0;
-  return Math.floor(dollarRisk / perUnitRisk);
+  // Return exact fractional size - no Math.floor()
+  // This allows fractional contracts/shares for precise dollar risk
+  return dollarRisk / perUnitRisk;
 }
 
 /**
@@ -166,14 +174,15 @@ export function calculatePositionSize(
  *
  * @param basePositionSize - Position size before volatility adjustment
  * @param volatilityClass - Volatility classification
- * @returns Adjusted position size and multiplier info
+ * @returns Adjusted position size and multiplier info (supports fractional)
  */
 export function applyVolatilityAdjustment(
   basePositionSize: number,
   volatilityClass: VolatilityClass
 ): VolatilityAdjustment {
   const multiplier = VOLATILITY_MULTIPLIERS[volatilityClass];
-  const adjustedSize = Math.floor(basePositionSize * multiplier);
+  // Keep exact fractional precision - no Math.floor()
+  const adjustedSize = basePositionSize * multiplier;
 
   return {
     basePositionSize,
@@ -194,18 +203,19 @@ export function applyVolatilityAdjustment(
  *
  * @param entry - Entry price
  * @param stop - Stop loss price
+ * @param direction - Trade direction ('long' or 'short')
  * @param rrTarget - Risk:Reward ratio (e.g., 2 for 2:1, 3 for 3:1)
  * @returns Take profit price
  */
 export function calculateTP(
   entry: number,
   stop: number,
+  direction: Direction,
   rrTarget: number
 ): number {
   const riskDistance = Math.abs(entry - stop);
-  const isLong = entry > stop;
 
-  return isLong
+  return direction === 'long'
     ? entry + rrTarget * riskDistance
     : entry - rrTarget * riskDistance;
 }
@@ -221,21 +231,22 @@ export function calculateTP(
  *
  * @param entry - Entry price
  * @param stop - Stop loss price
+ * @param direction - Trade direction ('long' or 'short')
  * @param multiples - Array of R-multiples (e.g., [0.5, 1, 1.5, 2])
  * @returns Array of alert objects with labels and trigger prices
  */
 export function calculateAlerts(
   entry: number,
   stop: number,
+  direction: Direction,
   multiples: number[]
 ): Array<{ label: string; triggerPrice: number; rMultiple: number }> {
   const riskDistance = Math.abs(entry - stop);
-  const isLong = entry > stop;
 
   return multiples.map((multiple) => ({
     label: `${multiple}R`,
     rMultiple: multiple,
-    triggerPrice: isLong
+    triggerPrice: direction === 'long'
       ? entry + multiple * riskDistance
       : entry - multiple * riskDistance,
   }));
@@ -253,6 +264,7 @@ export function calculateAlerts(
  *
  * @param entry - Entry price
  * @param stop - Stop loss price
+ * @param direction - Trade direction ('long' or 'short')
  * @param atr - Average True Range value
  * @param atrPeriod - ATR period used (14 is standard)
  * @returns ATR analysis with recommendations
@@ -260,13 +272,13 @@ export function calculateAlerts(
 export function analyzeATR(
   entry: number,
   stop: number,
+  direction: Direction,
   atr: number,
   atrPeriod = 14
 ): ATRAnalysis {
   const stopDistance = Math.abs(entry - stop);
   const stopInATR = stopDistance / atr;
   const atrPct = (atr / entry) * 100;
-  const isLong = entry > stop;
 
   // Determine appropriate ATR multiplier range
   // Day traders: 1-2 ATR
@@ -274,7 +286,7 @@ export function analyzeATR(
   // Position traders: 3-5 ATR
   const suggestedMultiplier = 2.0; // Default for swing trading
   const suggestedStopDistance = atr * suggestedMultiplier;
-  const suggestedStopPrice = isLong
+  const suggestedStopPrice = direction === 'long'
     ? entry - suggestedStopDistance
     : entry + suggestedStopDistance;
 
@@ -354,6 +366,7 @@ export function calculate(inputs: {
   entry: number;
   stop: number;
   conviction: ConvictionType;
+  direction: Direction; // NEW in v2.1
 
   // Optional Parameters
   slippage?: number;
@@ -401,6 +414,7 @@ export function calculate(inputs: {
   const takeProfitPrice = calculateTP(
     inputs.entry,
     inputs.stop,
+    inputs.direction,
     inputs.rrTarget ?? 2
   );
 
@@ -408,6 +422,7 @@ export function calculate(inputs: {
   const alerts = calculateAlerts(
     inputs.entry,
     inputs.stop,
+    inputs.direction,
     [0.5, 1, 1.5, 2]
   );
 
@@ -417,6 +432,7 @@ export function calculate(inputs: {
     atrAnalysis = analyzeATR(
       inputs.entry,
       inputs.stop,
+      inputs.direction,
       inputs.atr,
       inputs.atrPeriod
     );
@@ -445,7 +461,7 @@ export function calculate(inputs: {
     // Volatility analysis
     atrAnalysis,
 
-    // Trade direction
-    isLong: inputs.entry > inputs.stop,
+    // Trade direction (explicit, not inferred)
+    isLong: inputs.direction === 'long',
   };
 }

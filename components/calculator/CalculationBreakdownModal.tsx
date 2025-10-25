@@ -8,6 +8,8 @@
 import { Modal, Badge } from '@/components/ui';
 import { useRiskSizingStore } from '@/lib/store';
 import { CONVICTION_CONFIGS } from '@/lib/constants';
+import { formatPositionSize, getPositionPrecision } from '@/lib/formatters';
+import { getUnitLabel } from '@/types/instruments';
 
 interface CalculationBreakdownModalProps {
   isOpen: boolean;
@@ -252,7 +254,7 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
               <div className="pt-2 border-t">
                 <p className="text-gray-600">Base Position Size</p>
                 <p className="text-lg font-bold text-blue-900">
-                  {formatNumber(outputs.basePositionSize, 0)} shares
+                  {formatPositionSize(outputs.basePositionSize, inputs.instrumentType)}
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
                   = {formatCurrency(outputs.dollarRisk)} ÷ {formatCurrency(riskPerShare)}
@@ -293,7 +295,11 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
                   <div>
                     <p className="text-gray-600">Adjustment</p>
                     <p className={`font-mono font-semibold ${outputs.volatilityAdjustment && outputs.volatilityAdjustment > 0 ? 'text-green-700' : 'text-red-700'}`}>
-                      {outputs.volatilityAdjustment ? (outputs.volatilityAdjustment > 0 ? '+' : '') + formatNumber(outputs.volatilityAdjustment, 0) : '0'} shares
+                      {outputs.volatilityAdjustment
+                        ? (outputs.volatilityAdjustment > 0 ? '+' : '') +
+                          outputs.volatilityAdjustment.toFixed(getPositionPrecision(inputs.instrumentType, outputs.volatilityAdjustment)) +
+                          ' ' + getUnitLabel(inputs.instrumentType, outputs.volatilityAdjustment)
+                        : '0'}
                     </p>
                   </div>
                 </div>
@@ -301,10 +307,10 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
                 <div className="pt-2 border-t">
                   <p className="text-gray-600">Volatility-Adjusted Position</p>
                   <p className="text-lg font-bold text-purple-900">
-                    {formatNumber(outputs.positionSize, 0)} shares
+                    {formatPositionSize(outputs.positionSize, inputs.instrumentType)}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
-                    = {formatNumber(outputs.basePositionSize, 0)} × {outputs.volatilityMultiplier.toFixed(2)}
+                    = {formatPositionSize(outputs.basePositionSize, inputs.instrumentType)} × {outputs.volatilityMultiplier.toFixed(2)}
                   </p>
                 </div>
               </div>
@@ -323,9 +329,8 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
               <div>
                 <p className="text-sm text-gray-600">Position Size</p>
                 <p className="text-2xl font-bold text-blue-900">
-                  {formatNumber(outputs.positionSize, 0)}
+                  {formatPositionSize(outputs.positionSize, inputs.instrumentType)}
                 </p>
-                <p className="text-xs text-gray-500">shares</p>
               </div>
               <div>
                 <p className="text-sm text-gray-600">Position Value</p>

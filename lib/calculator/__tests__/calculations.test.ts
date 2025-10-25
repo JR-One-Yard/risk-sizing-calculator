@@ -24,7 +24,7 @@ import {
   calculate,
 } from '../calculations';
 import type { ConvictionType } from '@/types/calculator';
-import type { VolatilityClass } from '@/types/volatility';
+import { VolatilityClass } from '@/types/volatility';
 
 describe('calculateRisk', () => {
   describe('Base Risk Calculation', () => {
@@ -211,9 +211,9 @@ describe('calculatePositionSize', () => {
     expect(positionSize).toBe(2500); // $5000 / $2 = 2500 shares
   });
 
-  it('should floor position size to avoid over-risking', () => {
+  it('should support fractional position sizes for precise dollar risk', () => {
     const positionSize = calculatePositionSize(5000, 3);
-    expect(positionSize).toBe(1666); // floor(5000 / 3) = 1666
+    expect(positionSize).toBeCloseTo(1666.6667, 4); // 5000 / 3 = 1666.6667 (exact fractional)
   });
 
   it('should return 0 for zero perUnitRisk', () => {
@@ -270,15 +270,15 @@ describe('applyVolatilityAdjustment', () => {
     expect(result.adjustmentPct).toBe(-70);
   });
 
-  it('should floor adjusted position size', () => {
+  it('should preserve fractional precision in volatility adjustment', () => {
     const result = applyVolatilityAdjustment(1001, 'ULTRA_HIGH');
-    expect(result.adjustedPositionSize).toBe(300); // floor(1001 * 0.3) = floor(300.3)
+    expect(result.adjustedPositionSize).toBeCloseTo(300.3, 1); // 1001 * 0.3 = 300.3 (exact fractional)
   });
 });
 
 describe('calculateTP', () => {
   it('should calculate TP for long position with 2:1 R:R', () => {
-    const tp = calculateTP(100, 98, 2);
+    const tp = calculateTP(100, 98, 'long', 2);
     // Risk: $100 - $98 = $2
     // Reward: $2 * 2 = $4
     // TP: $100 + $4 = $104
@@ -286,7 +286,7 @@ describe('calculateTP', () => {
   });
 
   it('should calculate TP for short position with 2:1 R:R', () => {
-    const tp = calculateTP(98, 100, 2);
+    const tp = calculateTP(98, 100, 'short', 2);
     // Risk: |$98 - $100| = $2
     // Reward: $2 * 2 = $4
     // TP: $98 - $4 = $94
@@ -294,14 +294,14 @@ describe('calculateTP', () => {
   });
 
   it('should handle 3:1 R:R ratio', () => {
-    const tp = calculateTP(50, 48, 3);
+    const tp = calculateTP(50, 48, 'long', 3);
     // Risk: $2, Reward: $6
     // TP: $50 + $6 = $56
     expect(tp).toBe(56);
   });
 
   it('should handle 1:1 R:R ratio', () => {
-    const tp = calculateTP(100, 95, 1);
+    const tp = calculateTP(100, 95, 'long', 1);
     // Risk: $5, Reward: $5
     // TP: $100 + $5 = $105
     expect(tp).toBe(105);
@@ -310,7 +310,7 @@ describe('calculateTP', () => {
 
 describe('calculateAlerts', () => {
   it('should generate correct R-multiple alerts for long position', () => {
-    const alerts = calculateAlerts(100, 98, [0.5, 1, 1.5, 2]);
+    const alerts = calculateAlerts(100, 98, 'long', [0.5, 1, 1.5, 2]);
 
     // Risk: $2 per R
     expect(alerts).toHaveLength(4);
@@ -321,7 +321,7 @@ describe('calculateAlerts', () => {
   });
 
   it('should generate correct R-multiple alerts for short position', () => {
-    const alerts = calculateAlerts(98, 100, [0.5, 1, 2]);
+    const alerts = calculateAlerts(98, 100, 'short', [0.5, 1, 2]);
 
     // Risk: $2 per R
     expect(alerts).toHaveLength(3);
@@ -331,7 +331,7 @@ describe('calculateAlerts', () => {
   });
 
   it('should handle custom R-multiples', () => {
-    const alerts = calculateAlerts(100, 95, [0.25, 0.75, 1.25]);
+    const alerts = calculateAlerts(100, 95, 'long', [0.25, 0.75, 1.25]);
 
     // Risk: $5 per R
     expect(alerts).toHaveLength(3);
@@ -343,7 +343,7 @@ describe('calculateAlerts', () => {
 
 describe('analyzeATR', () => {
   it('should analyze appropriate stop distance', () => {
-    const result = analyzeATR(100, 98, 1); // Stop = 2 ATR (appropriate)
+    const result = analyzeATR(100, 98, 'long', 1); // Stop = 2 ATR (appropriate)
 
     expect(result.atr).toBe(1);
     expect(result.atrPeriod).toBe(14); // Default
@@ -355,7 +355,7 @@ describe('analyzeATR', () => {
   });
 
   it('should warn about tight stops', () => {
-    const result = analyzeATR(100, 99.5, 1); // Stop = 0.5 ATR (too tight)
+    const result = analyzeATR(100, 99.5, 'long', 1); // Stop = 0.5 ATR (too tight)
 
     expect(result.stopInATR).toBe(0.5);
     expect(result.severity).toBe('warning');
@@ -364,7 +364,7 @@ describe('analyzeATR', () => {
   });
 
   it('should warn about wide stops', () => {
-    const result = analyzeATR(100, 95, 1); // Stop = 5 ATR (too wide)
+    const result = analyzeATR(100, 95, 'long', 1); // Stop = 5 ATR (too wide)
 
     expect(result.stopInATR).toBe(5);
     expect(result.severity).toBe('warning');
@@ -372,7 +372,7 @@ describe('analyzeATR', () => {
   });
 
   it('should calculate suggested stop price for long', () => {
-    const result = analyzeATR(100, 98, 1);
+    const result = analyzeATR(100, 98, 'long', 1);
 
     expect(result.suggestedMultiplier).toBe(2.0);
     expect(result.suggestedStopDistance).toBe(2); // 2 * 1 ATR
@@ -380,13 +380,13 @@ describe('analyzeATR', () => {
   });
 
   it('should calculate suggested stop price for short', () => {
-    const result = analyzeATR(98, 100, 1);
+    const result = analyzeATR(98, 100, 'short', 1);
 
     expect(result.suggestedStopPrice).toBe(100); // $98 + $2
   });
 
   it('should handle custom ATR period', () => {
-    const result = analyzeATR(100, 98, 1, 20);
+    const result = analyzeATR(100, 98, 'long', 1, 20);
     expect(result.atrPeriod).toBe(20);
   });
 });
@@ -442,6 +442,7 @@ describe('calculate (Main Orchestrator)', () => {
       entry: 100,
       stop: 98,
       conviction: 'II',
+      direction: 'long', // NEW in v2.1
       slippage: 0,
       multiplier: 1,
       rrTarget: 2,
@@ -465,7 +466,8 @@ describe('calculate (Main Orchestrator)', () => {
       entry: 100,
       stop: 98,
       conviction: 'II',
-      volatilityClass: 'HIGH', // 0.5x multiplier
+      direction: 'long', // NEW in v2.1
+      volatilityClass: VolatilityClass.HIGH, // 0.5x multiplier
     });
 
     // Base: 1500 shares
@@ -483,6 +485,7 @@ describe('calculate (Main Orchestrator)', () => {
       entry: 100,
       stop: 98,
       conviction: 'II',
+      direction: 'long', // NEW in v2.1
       atr: 1,
       atrPeriod: 14,
     });
@@ -499,10 +502,11 @@ describe('calculate (Main Orchestrator)', () => {
       entry: 98,
       stop: 100,
       conviction: 'I',
+      direction: 'short', // NEW in v2.1 - explicit short direction
     });
 
     expect(result.isLong).toBe(false);
-    expect(result.takeProfitPrice).toBe(94); // $98 - (2 * 2) = $94
+    expect(result.takeProfitPrice).toBe(94); // $98 - (2 * 2) = $94 (take profit below entry for shorts)
   });
 
   it('should apply all features together', () => {
@@ -512,11 +516,12 @@ describe('calculate (Main Orchestrator)', () => {
       entry: 50,
       stop: 48,
       conviction: 'I',
+      direction: 'long', // NEW in v2.1
       slippage: 0.5,
       multiplier: 1,
       rrTarget: 3,
       monthlyStopLoss: 5000,
-      volatilityClass: 'LOW', // 1.5x
+      volatilityClass: VolatilityClass.LOW, // 1.5x
       atr: 1,
       atrPeriod: 14,
     });

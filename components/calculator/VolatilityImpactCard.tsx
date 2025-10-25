@@ -10,6 +10,7 @@
 import { Card, CardHeader, CardTitle, CardContent, Badge } from '@/components/ui';
 import { useRiskSizingStore } from '@/lib/store';
 import { VOLATILITY_CONFIGS } from '@/types/volatility';
+import { formatPositionSize } from '@/lib/formatters';
 
 export function VolatilityImpactCard() {
   const outputs = useRiskSizingStore((state) => state.outputs);
@@ -94,7 +95,7 @@ export function VolatilityImpactCard() {
             <div className="flex justify-between items-center mb-1">
               <span className="text-sm text-gray-600">Base Position (Standard Risk)</span>
               <span className="text-sm font-mono text-gray-900">
-                {formatNumber(outputs.basePositionSize)} shares
+                {formatPositionSize(outputs.basePositionSize, inputs.instrumentType)}
               </span>
             </div>
             <div className="h-8 bg-gray-200 rounded-lg flex items-center px-3">
@@ -133,7 +134,7 @@ export function VolatilityImpactCard() {
                 Volatility-Adjusted Position
               </span>
               <span className="text-sm font-mono font-bold text-purple-900">
-                {formatNumber(outputs.positionSize)} shares
+                {formatPositionSize(outputs.positionSize, inputs.instrumentType)}
               </span>
             </div>
             <div className="h-8 bg-gray-200 rounded-lg flex items-center px-3">

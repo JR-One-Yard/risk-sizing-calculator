@@ -4,6 +4,7 @@
  */
 
 import { VolatilityClass } from './volatility';
+import type { Direction, InstrumentType } from './instruments';
 
 // ============================================================================
 // CONVICTION TYPES (CORRECTLY LABELED FROM DAY ONE)
@@ -56,6 +57,10 @@ export interface CalculatorInputs {
   conviction: ConvictionType;
   volatilityClass: VolatilityClass;
   timeHorizon: TimeHorizon;
+
+  // Trade Direction & Instrument (NEW in v2.1)
+  direction: Direction;  // 'long' or 'short'
+  instrumentType: InstrumentType;  // STOCK, FUTURES_INDEX, etc.
 
   // Price Levels
   entryPrice: number;

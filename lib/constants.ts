@@ -5,6 +5,7 @@
 
 import { RiskPolicy, ConvictionConfig, CalculatorInputs } from '@/types/calculator';
 import { VolatilityClass } from '@/types/volatility';
+import { InstrumentType } from '@/types/instruments';
 
 // ============================================================================
 // CONVICTION CONFIGURATIONS (CORRECT FROM DAY ONE!)
@@ -83,6 +84,10 @@ export const DEFAULT_INPUTS: CalculatorInputs = {
   conviction: 'II',  // Default to Medium Conviction
   volatilityClass: VolatilityClass.MEDIUM,  // Default to Medium Volatility
   timeHorizon: 'swing',
+
+  // Trade Direction & Instrument (NEW in v2.1)
+  direction: 'long',  // Default to long positions
+  instrumentType: InstrumentType.STOCK,  // Default to stocks
 
   // Price Levels
   entryPrice: 0,

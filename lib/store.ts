@@ -15,6 +15,7 @@ import { calculate } from '@/lib/calculator';
 import { DEFAULT_INPUTS, DEFAULT_RISK_POLICY } from '@/lib/constants';
 import { VolatilityClass } from '@/types/volatility';
 import type { ConvictionType } from '@/types/calculator';
+import type { Direction, InstrumentType } from '@/types/instruments';
 
 // ============================================================================
 // TYPES
@@ -32,6 +33,10 @@ export interface CalculatorInputs {
   conviction: ConvictionType;
   volatilityClass: VolatilityClass;
   timeHorizon: 'day' | 'swing' | 'position';
+
+  // Trade Direction & Instrument (NEW in v2.1)
+  direction: Direction;
+  instrumentType: InstrumentType;
 
   // Price Levels
   entryPrice: number;
@@ -189,6 +194,8 @@ const initialInputs: CalculatorInputs = {
   conviction: DEFAULT_INPUTS.conviction,
   volatilityClass: DEFAULT_INPUTS.volatilityClass,
   timeHorizon: DEFAULT_INPUTS.timeHorizon,
+  direction: DEFAULT_INPUTS.direction,
+  instrumentType: DEFAULT_INPUTS.instrumentType,
   entryPrice: DEFAULT_INPUTS.entryPrice,
   stopLoss: DEFAULT_INPUTS.stopLoss,
   slippage: DEFAULT_INPUTS.slippage,
@@ -255,7 +262,10 @@ export const useRiskSizingStore = create<RiskSizingStore>()(
 
         // Auto-calculate if we have valid entry and stop
         const { inputs } = get();
-        if (inputs.entryPrice > 0 && inputs.stopLoss > 0) {
+
+        // PHASE 3 FIX: Always calculate when we have valid numbers
+        // UI handles validation display - store just calculates
+        if (inputs.entryPrice > 0 && inputs.stopLoss > 0 && inputs.entryPrice !== inputs.stopLoss) {
           get().calculate();
         }
       },
@@ -265,9 +275,10 @@ export const useRiskSizingStore = create<RiskSizingStore>()(
           inputs: { ...state.inputs, [key]: value },
         }));
 
-        // Auto-calculate if we have valid entry and stop
+        // PHASE 3 FIX: Always calculate when we have valid numbers
+        // UI handles validation display - store just calculates
         const { inputs } = get();
-        if (inputs.entryPrice > 0 && inputs.stopLoss > 0) {
+        if (inputs.entryPrice > 0 && inputs.stopLoss > 0 && inputs.entryPrice !== inputs.stopLoss) {
           get().calculate();
         }
       },
@@ -312,6 +323,7 @@ export const useRiskSizingStore = create<RiskSizingStore>()(
             entry: inputs.entryPrice,
             stop: inputs.stopLoss,
             conviction: inputs.conviction,
+            direction: inputs.direction, // NEW in v2.1
 
             // Optional Parameters
             slippage: inputs.slippage,
@@ -459,7 +471,7 @@ export const useRiskSizingStore = create<RiskSizingStore>()(
             inputs: state.inputs,
             policy: state.policy,
             outputs: state.outputs,
-            version: 'v2.0.0',
+            version: 'v2.1.0', // Updated for short/multi-instrument support
             exportedAt: new Date().toISOString(),
           },
           null,
@@ -480,16 +492,29 @@ export const useRiskSizingStore = create<RiskSizingStore>()(
       }),
 
       // Version for migration support
-      version: 2,
+      version: 3,
 
       // Migration function for future versions
       migrate: (persistedState: any, version: number) => {
-        // If migrating from v1 or unversioned storage
-        if (version < 2) {
-          // Could map old conviction labels here if needed
-          // But since we're starting fresh, this is just a placeholder
-          return persistedState;
+        // Migration from v2 to v3: Add direction and instrumentType
+        if (version < 3) {
+          const state = persistedState as { inputs?: any; policy?: any };
+
+          // If we have inputs, migrate them
+          if (state.inputs) {
+            // Infer direction from existing entry/stop relationship
+            const isLong = state.inputs.entryPrice > state.inputs.stopLoss;
+
+            // Add new fields with sensible defaults
+            state.inputs.direction = isLong ? 'long' : 'short';
+            state.inputs.instrumentType = 'STOCK'; // Default to stocks
+
+            // Note: direction and instrumentType are now required fields
+          }
+
+          return state;
         }
+
         return persistedState;
       },
     }

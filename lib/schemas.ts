@@ -8,6 +8,7 @@
 
 import { z } from 'zod';
 import { VolatilityClass } from '@/types/volatility';
+import { InstrumentType } from '@/types/instruments';
 
 // ============================================================================
 // ENUMS & PRIMITIVES
@@ -33,6 +34,20 @@ export const timeHorizonSchema = z.enum(['day', 'swing', 'position'], {
  */
 export const volatilityClassSchema = z.nativeEnum(VolatilityClass, {
   message: 'Must be a valid volatility class (ULTRA_LOW, LOW, MEDIUM, HIGH, ULTRA_HIGH)',
+});
+
+/**
+ * Direction validation (NEW in v2.1)
+ */
+export const directionSchema = z.enum(['long', 'short'], {
+  message: 'Must be either "long" or "short"',
+});
+
+/**
+ * Instrument type validation (NEW in v2.1)
+ */
+export const instrumentTypeSchema = z.nativeEnum(InstrumentType, {
+  message: 'Must be a valid instrument type',
 });
 
 // ============================================================================
@@ -96,6 +111,10 @@ export const calculatorInputsSchema = z
     volatilityClass: volatilityClassSchema,
     timeHorizon: timeHorizonSchema,
 
+    // Trade Direction & Instrument (NEW in v2.1)
+    direction: directionSchema,
+    instrumentType: instrumentTypeSchema,
+
     // Price Levels
     entryPrice: positiveNumber('Entry Price')
       .max(1_000_000, { message: 'Entry Price exceeds maximum ($1M)' }),
@@ -138,18 +157,35 @@ export const calculatorInputsSchema = z
   )
   .refine(
     (data) => {
-      // If take profit is set, it should be on the correct side of entry
+      // Direction-aware validation: Stop must be on correct side of entry
+      if (data.direction === 'long') {
+        // For long positions, stop must be below entry
+        return data.stopLoss < data.entryPrice;
+      } else {
+        // For short positions, stop must be above entry
+        return data.stopLoss > data.entryPrice;
+      }
+    },
+    {
+      message: 'Stop Loss must be below Entry for long positions, above Entry for short positions',
+      path: ['stopLoss'],
+    }
+  )
+  .refine(
+    (data) => {
+      // If take profit is set, it should be on the correct side of entry based on direction
       if (!data.takeProfitTarget) return true;
 
-      const isLong = data.entryPrice > data.stopLoss;
-      if (isLong) {
+      if (data.direction === 'long') {
+        // For long positions, take profit must be above entry
         return data.takeProfitTarget > data.entryPrice;
       } else {
+        // For short positions, take profit must be below entry
         return data.takeProfitTarget < data.entryPrice;
       }
     },
     {
-      message: 'Take Profit must be beyond Entry in the direction of the trade',
+      message: 'Take Profit must be above Entry for long positions, below Entry for short positions',
       path: ['takeProfitTarget'],
     }
   )
@@ -364,4 +400,18 @@ export function isValidVolatilityClass(value: unknown): value is VolatilityClass
  */
 export function isValidTimeHorizon(value: unknown): value is 'day' | 'swing' | 'position' {
   return timeHorizonSchema.safeParse(value).success;
+}
+
+/**
+ * Check if a value is a valid direction
+ */
+export function isValidDirection(value: unknown): value is 'long' | 'short' {
+  return directionSchema.safeParse(value).success;
+}
+
+/**
+ * Check if a value is a valid instrument type
+ */
+export function isValidInstrumentType(value: unknown): value is InstrumentType {
+  return instrumentTypeSchema.safeParse(value).success;
 }

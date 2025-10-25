@@ -146,11 +146,11 @@ describe('Risk Management Specification Examples', () => {
       // Base risk: 5% × $100,000 = $5,000
       expect(result.riskCalculation.finalRisk).toBe(5000);
 
-      // Base position: $5,000 / $2,000 = 2 contracts (floored)
-      expect(result.basePositionSize).toBe(2);
+      // Base position: $5,000 / $2,000 = 2.5 contracts (exact fractional)
+      expect(result.basePositionSize).toBeCloseTo(2.5, 1);
 
-      // Volatility adjusted: 2 × 0.5 = 1 contract
-      expect(result.finalPositionSize).toBe(1);
+      // Volatility adjusted: 2.5 × 0.5 = 1.25 contracts (exact fractional)
+      expect(result.finalPositionSize).toBeCloseTo(1.25, 2);
 
       // ATR classification should be HIGH (4.4% daily)
       expect(result.atrAnalysis?.atrPct).toBeCloseTo(4.44, 1);

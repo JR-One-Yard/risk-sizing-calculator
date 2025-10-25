@@ -84,6 +84,8 @@ describe('Validation Schemas', () => {
       conviction: 'II' as const,
       volatilityClass: VolatilityClass.MEDIUM,
       timeHorizon: 'swing' as const,
+      direction: 'long' as const,
+      instrumentType: 'STOCK' as const,
       entryPrice: 100,
       stopLoss: 98,
       slippage: 0,
@@ -172,6 +174,7 @@ describe('Validation Schemas', () => {
       it('should accept take profit below entry for short trades', () => {
         const shortTrade = {
           ...validInputs,
+          direction: 'short' as const,
           entryPrice: 98,
           stopLoss: 100, // Short: stop above entry
           takeProfitTarget: 94,
@@ -187,19 +190,20 @@ describe('Validation Schemas', () => {
           takeProfitTarget: 96, // Below entry (wrong!)
         };
         expect(() => calculatorInputsSchema.parse(invalid)).toThrow(
-          'Take Profit must be beyond Entry'
+          'Take Profit must be above Entry for long positions, below Entry for short positions'
         );
       });
 
       it('should reject take profit on wrong side for short trades', () => {
         const invalid = {
           ...validInputs,
+          direction: 'short' as const,
           entryPrice: 98,
           stopLoss: 100, // Short
           takeProfitTarget: 102, // Above entry (wrong!)
         };
         expect(() => calculatorInputsSchema.parse(invalid)).toThrow(
-          'Take Profit must be beyond Entry'
+          'Take Profit must be above Entry for long positions, below Entry for short positions'
         );
       });
     });
@@ -467,6 +471,8 @@ describe('Validation Schemas', () => {
           conviction: 'II',
           volatilityClass: VolatilityClass.MEDIUM,
           timeHorizon: 'swing',
+          direction: 'long',
+          instrumentType: 'STOCK',
           entryPrice: 100,
           stopLoss: 98,
           slippage: 0,
@@ -491,6 +497,8 @@ describe('Validation Schemas', () => {
           conviction: 'II',
           volatilityClass: VolatilityClass.MEDIUM,
           timeHorizon: 'swing',
+          direction: 'long',
+          instrumentType: 'STOCK',
           entryPrice: 100,
           stopLoss: 98,
           slippage: 0,
