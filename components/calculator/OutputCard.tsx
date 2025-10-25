@@ -5,11 +5,20 @@
 
 'use client';
 
-import { Card, CardHeader, CardTitle, CardContent, Badge } from '@/components/ui';
+import { useState } from 'react';
+import { Card, CardHeader, CardTitle, CardContent, Badge, Button } from '@/components/ui';
 import { useRiskSizingStore } from '@/lib/store';
+import { exportTradePlan } from '@/lib/export';
+import { CalculationBreakdownModal } from './CalculationBreakdownModal';
 
 export function OutputCard() {
   const outputs = useRiskSizingStore((state) => state.outputs);
+  const inputs = useRiskSizingStore((state) => state.inputs);
+  const [isBreakdownOpen, setIsBreakdownOpen] = useState(false);
+
+  const handleExport = () => {
+    exportTradePlan(inputs, outputs);
+  };
 
   if (!outputs) {
     return (
@@ -58,10 +67,57 @@ export function OutputCard() {
   };
 
   return (
-    <Card variant="elevated">
-      <CardHeader>
-        <CardTitle>Results</CardTitle>
-      </CardHeader>
+    <>
+      <Card variant="elevated">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle>Results</CardTitle>
+            <div className="flex space-x-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsBreakdownOpen(true)}
+                className="flex items-center space-x-2"
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                  />
+                </svg>
+                <span>Details</span>
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleExport}
+                className="flex items-center space-x-2"
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+                <span>Export</span>
+              </Button>
+            </div>
+          </div>
+        </CardHeader>
       <CardContent>
         <div className="space-y-6">
           {/* Primary Results */}
@@ -234,5 +290,12 @@ export function OutputCard() {
         </div>
       </CardContent>
     </Card>
+
+    {/* Calculation Breakdown Modal */}
+    <CalculationBreakdownModal
+      isOpen={isBreakdownOpen}
+      onClose={() => setIsBreakdownOpen(false)}
+    />
+    </>
   );
 }

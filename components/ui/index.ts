@@ -26,3 +26,6 @@ export type { TooltipProps } from './Tooltip';
 
 export { ButtonGroup } from './ButtonGroup';
 export type { ButtonGroupProps, ButtonGroupOption } from './ButtonGroup';
+
+export { Footer } from './Footer';
+export type { FooterProps } from './Footer';
