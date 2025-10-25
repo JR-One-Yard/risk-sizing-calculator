@@ -56,10 +56,12 @@ FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md for the plan."
 - `HOW_TO_RESUME.md` - This file (resume instructions)
 - Git history: `git log --oneline` to see commits
 
-**Implementation Guides (in parent directory):**
-- `../FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md` - Complete roadmap
-- `../START_FRESH_VS_CONTINUE_ANALYSIS.md` - Why we started fresh
-- `../DECISION_FRAMEWORK.md` - Decision rationale
+**Implementation Guides (in docs folder):**
+- `../docs/implementation-guides/FRESH_START_IMPLEMENTATION_MASTER_GUIDE.md` - Complete roadmap
+- `../docs/analysis/START_FRESH_VS_CONTINUE_ANALYSIS.md` - Why we started fresh
+- `../docs/analysis/DECISION_FRAMEWORK.md` - Decision rationale
+- `../docs/design-specs/FRESH_IMPLEMENTATION_UX_DESIGN.md` - UI/UX design
+- `../docs/design-specs/RISK_MANAGEMENT_SPECIFICATIONS.md` - Risk calculations
 
 **Your Code:**
 - `types/calculator.ts` - Type definitions (CORRECT conviction labels!)
