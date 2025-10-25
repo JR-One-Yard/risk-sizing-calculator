@@ -3,6 +3,8 @@
  * Risk Sizing Tool v2 - Fresh Implementation
  */
 
+import { VolatilityClass } from './volatility';
+
 // ============================================================================
 // CONVICTION TYPES (CORRECTLY LABELED FROM DAY ONE)
 // ============================================================================
@@ -25,6 +27,23 @@ export interface ConvictionConfig {
 }
 
 // ============================================================================
+// RISK CALCULATION TYPES
+// ============================================================================
+
+export interface RiskCapWarning {
+  type: 'monthly_stop' | 'type_iii_monthly' | 'max_single_trade';
+  message: string;
+  originalRisk: number;
+  cappedRisk: number;
+}
+
+export interface RiskCalculationResult {
+  baseRisk: number;
+  finalRisk: number;
+  warnings: RiskCapWarning[];
+}
+
+// ============================================================================
 // INPUT TYPES
 // ============================================================================
 
@@ -35,7 +54,7 @@ export interface CalculatorInputs {
 
   // Trade Setup
   conviction: ConvictionType;
-  volatilityClass: string;  // Will be VolatilityClass enum from volatility.ts
+  volatilityClass: VolatilityClass;
   timeHorizon: TimeHorizon;
 
   // Price Levels

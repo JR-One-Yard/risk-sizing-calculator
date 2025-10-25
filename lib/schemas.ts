@@ -18,23 +18,21 @@ import { VolatilityClass } from '@/types/volatility';
  * Type I = HIGH, Type II = MEDIUM, Type III = LOW
  */
 export const convictionSchema = z.enum(['I', 'II', 'III'], {
-  errorMap: () => ({ message: 'Must be Type I, II, or III' }),
+  message: 'Must be Type I, II, or III',
 });
 
 /**
  * Time horizon validation
  */
 export const timeHorizonSchema = z.enum(['day', 'swing', 'position'], {
-  errorMap: () => ({ message: 'Must be day, swing, or position trade' }),
+  message: 'Must be day, swing, or position trade',
 });
 
 /**
  * Volatility class validation (NEW in v2)
  */
 export const volatilityClassSchema = z.nativeEnum(VolatilityClass, {
-  errorMap: () => ({
-    message: 'Must be a valid volatility class (ULTRA_LOW, LOW, MEDIUM, HIGH, ULTRA_HIGH)',
-  }),
+  message: 'Must be a valid volatility class (ULTRA_LOW, LOW, MEDIUM, HIGH, ULTRA_HIGH)',
 });
 
 // ============================================================================
@@ -46,10 +44,7 @@ export const volatilityClassSchema = z.nativeEnum(VolatilityClass, {
  * Must be > 0
  */
 export const positiveNumber = (fieldName: string) =>
-  z.number({
-    required_error: `${fieldName} is required`,
-    invalid_type_error: `${fieldName} must be a number`,
-  }).positive({
+  z.number().positive({
     message: `${fieldName} must be greater than 0`,
   });
 
@@ -58,10 +53,7 @@ export const positiveNumber = (fieldName: string) =>
  * Can be 0 or positive
  */
 export const nonNegativeNumber = (fieldName: string) =>
-  z.number({
-    required_error: `${fieldName} is required`,
-    invalid_type_error: `${fieldName} must be a number`,
-  }).nonnegative({
+  z.number().nonnegative({
     message: `${fieldName} cannot be negative`,
   });
 
@@ -75,10 +67,7 @@ export const optionalPositiveNumber = (fieldName: string) =>
  * Percentage validation (0-100)
  */
 export const percentageSchema = (fieldName: string) =>
-  z.number({
-    required_error: `${fieldName} is required`,
-    invalid_type_error: `${fieldName} must be a number`,
-  })
+  z.number()
     .min(0, { message: `${fieldName} must be at least 0%` })
     .max(100, { message: `${fieldName} cannot exceed 100%` });
 
@@ -98,10 +87,7 @@ export const calculatorInputsSchema = z
       .max(1_000_000_000, { message: 'Free Capital exceeds maximum ($1B)' }),
 
     ytdPnL: z
-      .number({
-        required_error: 'YTD P&L is required',
-        invalid_type_error: 'YTD P&L must be a number',
-      })
+      .number()
       .min(-1_000_000_000, { message: 'YTD P&L exceeds minimum (-$1B)' })
       .max(1_000_000_000, { message: 'YTD P&L exceeds maximum ($1B)' }),
 
@@ -351,7 +337,7 @@ export function safeValidateRiskPolicy(data: unknown) {
 export function getValidationErrors(error: z.ZodError): Record<string, string> {
   const errors: Record<string, string> = {};
 
-  error.errors.forEach((err) => {
+  error.issues.forEach((err) => {
     const path = err.path.join('.');
     errors[path] = err.message;
   });

@@ -20,8 +20,8 @@ import type {
   RiskCalculationResult,
   RiskCapWarning,
 } from '@/types/calculator';
+import { VolatilityClass } from '@/types/volatility';
 import type {
-  VolatilityClass,
   VolatilityAdjustment,
   ATRAnalysis,
 } from '@/types/volatility';
@@ -323,11 +323,11 @@ export function classifyVolatilityFromATR(
 ): VolatilityClass {
   const atrPct = (atr / price) * 100;
 
-  if (atrPct < ATR_PERCENTILE_RANGES.ULTRA_LOW) return 'ULTRA_LOW';
-  if (atrPct < ATR_PERCENTILE_RANGES.LOW) return 'LOW';
-  if (atrPct < ATR_PERCENTILE_RANGES.MEDIUM) return 'MEDIUM';
-  if (atrPct < ATR_PERCENTILE_RANGES.HIGH) return 'HIGH';
-  return 'ULTRA_HIGH';
+  if (atrPct < ATR_PERCENTILE_RANGES.ULTRA_LOW) return VolatilityClass.ULTRA_LOW;
+  if (atrPct < ATR_PERCENTILE_RANGES.LOW) return VolatilityClass.LOW;
+  if (atrPct < ATR_PERCENTILE_RANGES.MEDIUM) return VolatilityClass.MEDIUM;
+  if (atrPct < ATR_PERCENTILE_RANGES.HIGH) return VolatilityClass.HIGH;
+  return VolatilityClass.ULTRA_HIGH;
 }
 
 /**

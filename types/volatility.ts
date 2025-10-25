@@ -48,6 +48,36 @@ export interface VolatilityConfig {
   };
 }
 
+// ============================================================================
+// VOLATILITY ADJUSTMENT RESULTS
+// ============================================================================
+
+export interface VolatilityAdjustment {
+  basePositionSize: number;
+  volatilityClass: VolatilityClass;
+  multiplier: number;
+  adjustedPositionSize: number;
+  adjustment: number; // Difference (adjusted - base)
+  adjustmentPct: number; // Percentage change
+}
+
+export interface ATRAnalysis {
+  atr: number;
+  atrPeriod: number;
+  atrPct: number; // ATR as % of price
+  stopDistance: number;
+  stopInATR: number; // Stop distance in ATR terms
+  suggestedMultiplier: number;
+  suggestedStopDistance: number;
+  suggestedStopPrice: number;
+  recommendation: string;
+  severity: 'info' | 'warning' | 'error';
+}
+
+// ============================================================================
+// VOLATILITY CONFIGURATION DATA
+// ============================================================================
+
 /**
  * Complete configuration for all volatility classes
  * Used for UI display and user education

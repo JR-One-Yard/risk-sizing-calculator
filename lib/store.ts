@@ -62,7 +62,7 @@ export interface RiskPolicy {
   typeIII: {
     basePctOfFC: number;
     ytdPct: number;
-    hardCapPctOfFreePlusYTD: number;
+    hardCapPctOfFreePlusYTD?: number;
   };
 
   // Global Caps
