@@ -88,26 +88,32 @@ export interface RiskPolicy {
 export interface CalculationOutputs {
   // Core Results
   dollarRisk: number;
+  riskPercentage: number;
   positionSize: number;
+  positionValue: number;
   basePositionSize: number; // Before volatility adjustment
 
   // Volatility Impact (NEW in v2)
-  volatilityMultiplier: number | null;
+  volatilityMultiplier: number;
   volatilityAdjustment: number | null; // Difference in position size
 
-  // Take Profit & Alerts
+  // Take Profit
   takeProfitPrice: number;
-  alerts: Array<{
-    label: string;
-    rMultiple: number;
-    triggerPrice: number;
-  }>;
+  takeProfitValue: number;
 
-  // Risk Caps Applied
-  capsApplied: string[];
-  warnings: Array<{
-    type: string;
+  // R-Multiple Analysis
+  rMultiple: {
+    current: number;
+    target: number;
+    breakeven: number;
+  };
+
+  // Alerts & Warnings
+  appliedCaps: string[];
+  alerts: Array<{
+    level: 'info' | 'warning' | 'danger';
     message: string;
+    type: string;
   }>;
 
   // ATR Analysis (NEW in v2)
@@ -321,20 +327,65 @@ export const useRiskSizingStore = create<RiskSizingStore>()(
             atrPeriod: policy.volatility.atrPeriod,
           });
 
+          // Calculate derived values
+          const positionValue = result.finalPositionSize * inputs.entryPrice;
+          const riskPercentage = (result.dollarRisk / inputs.freeCapital) * 100;
+          const riskDistance = Math.abs(inputs.entryPrice - inputs.stopLoss);
+          const takeProfitDistance = Math.abs(result.takeProfitPrice - inputs.entryPrice);
+          const takeProfitValue = (takeProfitDistance / riskDistance) * result.dollarRisk;
+
+          // Transform warnings to alerts
+          const alerts: Array<{
+            level: 'info' | 'warning' | 'danger';
+            message: string;
+            type: string;
+          }> = [];
+
+          // Add cap warnings as alerts
+          result.riskCalculation.warnings.forEach((warning) => {
+            alerts.push({
+              level: 'warning',
+              message: warning.message,
+              type: warning.type.toUpperCase().replace(/_/g, ' '),
+            });
+          });
+
+          // Add high risk alert if > 3%
+          if (riskPercentage > 3) {
+            alerts.push({
+              level: riskPercentage > 5 ? 'danger' : 'warning',
+              message: `High risk allocation: ${riskPercentage.toFixed(2)}% of capital`,
+              type: 'HIGH_RISK',
+            });
+          }
+
+          // Add ATR warning if available
+          if (result.atrAnalysis && result.atrAnalysis.severity === 'warning') {
+            alerts.push({
+              level: 'warning',
+              message: result.atrAnalysis.recommendation,
+              type: 'VOLATILITY_WARNING',
+            });
+          }
+
           // Transform calculation result to store format
           const outputs: CalculationOutputs = {
             dollarRisk: result.dollarRisk,
+            riskPercentage,
             positionSize: result.finalPositionSize,
+            positionValue,
             basePositionSize: result.basePositionSize,
-            volatilityMultiplier: result.volatilityAdjustment?.multiplier ?? null,
+            volatilityMultiplier: result.volatilityAdjustment?.multiplier ?? 1.0,
             volatilityAdjustment: result.volatilityAdjustment?.adjustment ?? null,
             takeProfitPrice: result.takeProfitPrice,
-            alerts: result.alerts,
-            capsApplied: result.riskCalculation.warnings.map((w) => w.type),
-            warnings: result.riskCalculation.warnings.map((w) => ({
-              type: w.type,
-              message: w.message,
-            })),
+            takeProfitValue,
+            rMultiple: {
+              current: 0, // At entry, no profit/loss yet
+              target: policy.defaultRMultipleTarget,
+              breakeven: 0, // Breakeven is at entry (0R)
+            },
+            appliedCaps: result.riskCalculation.warnings.map((w) => w.message),
+            alerts,
             atrAnalysis: result.atrAnalysis
               ? {
                   atr: result.atrAnalysis.atr,

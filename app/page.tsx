@@ -5,7 +5,8 @@
 
 'use client';
 
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui';
+import { InputCard } from '@/components/calculator/InputCard';
+import { OutputCard } from '@/components/calculator/OutputCard';
 
 export default function CalculatorPage() {
   return (
@@ -24,24 +25,10 @@ export default function CalculatorPage() {
         {/* Main Layout: Two Column */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Left Column: Inputs */}
-          <Card variant="elevated">
-            <CardHeader>
-              <CardTitle>Trade Setup</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">Input form coming soon...</p>
-            </CardContent>
-          </Card>
+          <InputCard />
 
           {/* Right Column: Outputs */}
-          <Card variant="elevated">
-            <CardHeader>
-              <CardTitle>Results</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">Results display coming soon...</p>
-            </CardContent>
-          </Card>
+          <OutputCard />
         </div>
       </div>
     </main>
