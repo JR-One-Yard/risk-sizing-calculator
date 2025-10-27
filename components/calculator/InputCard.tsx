@@ -192,7 +192,7 @@ export function InputCard() {
         <div className="space-y-6">
           {/* Account Information */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">
+            <h3 className="text-sm font-semibold text-ink mb-3">
               Account Information
             </h3>
             <div className="space-y-4">
@@ -219,7 +219,7 @@ export function InputCard() {
 
           {/* Trade Setup */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">
+            <h3 className="text-sm font-semibold text-ink mb-3">
               Trade Setup
             </h3>
             <div className="space-y-4">
@@ -253,7 +253,7 @@ export function InputCard() {
 
           {/* Trade Direction (NEW in v2.1) */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">
+            <h3 className="text-sm font-semibold text-ink mb-3">
               Trade Direction
             </h3>
             <ButtonGroup
@@ -273,14 +273,14 @@ export function InputCard() {
 
             {/* Validation Error Banner */}
             {stopLossError && (
-              <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-md">
+              <div className="mt-4 p-4 bg-error-bg border border-error-border rounded-[10px]">
                 <div className="flex items-start">
-                  <svg className="w-5 h-5 text-red-600 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-5 h-5 text-error mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                   <div className="flex-1">
-                    <h4 className="text-sm font-semibold text-red-800 mb-1">Invalid Stop Loss</h4>
-                    <p className="text-sm text-red-700">{stopLossError}</p>
+                    <h4 className="text-sm font-semibold text-error mb-1">Invalid Stop Loss</h4>
+                    <p className="text-sm text-error">{stopLossError}</p>
                   </div>
                 </div>
               </div>
@@ -289,7 +289,7 @@ export function InputCard() {
 
           {/* Instrument Selection (NEW in v2.1) */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">
+            <h3 className="text-sm font-semibold text-ink mb-3">
               Instrument Type
             </h3>
             <div className="space-y-4">
@@ -316,7 +316,7 @@ export function InputCard() {
 
           {/* Price Levels */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">
+            <h3 className="text-sm font-semibold text-ink mb-3">
               Price Levels
             </h3>
             <div className="space-y-4">
@@ -366,7 +366,7 @@ export function InputCard() {
 
           {/* Advanced Options */}
           <details className="group">
-            <summary className="cursor-pointer text-sm font-semibold text-gray-700 mb-3 list-none flex items-center">
+            <summary className="cursor-pointer text-sm font-semibold text-ink mb-3 list-none flex items-center">
               <svg
                 className="w-4 h-4 mr-2 transition-transform group-open:rotate-90"
                 fill="none"

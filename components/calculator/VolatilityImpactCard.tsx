@@ -42,26 +42,26 @@ export function VolatilityImpactCard() {
   };
 
   return (
-    <Card variant="elevated" className="border-2 border-purple-200">
-      <CardHeader className="bg-purple-50">
+    <Card variant="elevated" className="border-2 border-brand">
+      <CardHeader className="bg-brand-tint">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-purple-900">
+          <CardTitle className="text-ink">
             Volatility Impact
           </CardTitle>
-          <Badge variant="info" className="bg-purple-600 text-white">
+          <Badge variant="info" className="bg-brand text-white">
             NEW v2 Feature
           </Badge>
         </div>
       </CardHeader>
       <CardContent className="space-y-6 pt-6">
         {/* Volatility Class Info */}
-        <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
+        <div className="bg-brand-tint rounded-[10px] p-4 border border-border">
           <div className="flex items-start justify-between mb-2">
             <div>
-              <h3 className="text-sm font-semibold text-gray-900">
+              <h3 className="text-sm font-semibold text-ink">
                 {volatilityConfig.class.replace('_', ' ')} Volatility
               </h3>
-              <p className="text-xs text-gray-600 mt-1">
+              <p className="text-xs text-ink-muted mt-1">
                 {volatilityConfig.description}
               </p>
             </div>
@@ -70,12 +70,12 @@ export function VolatilityImpactCard() {
             </Badge>
           </div>
           <div className="mt-3">
-            <p className="text-xs text-gray-500">Example instruments:</p>
+            <p className="text-xs text-ink-muted">Example instruments:</p>
             <div className="flex flex-wrap gap-1 mt-1">
               {volatilityConfig.examples.map((example, index) => (
                 <span
                   key={index}
-                  className="text-xs bg-white px-2 py-0.5 rounded border border-purple-100"
+                  className="text-xs bg-bg px-2 py-0.5 rounded-[10px] border border-border"
                 >
                   {example}
                 </span>
@@ -86,21 +86,21 @@ export function VolatilityImpactCard() {
 
         {/* Visual Impact Comparison */}
         <div>
-          <h3 className="text-sm font-semibold text-gray-700 mb-4">
+          <h3 className="text-sm font-semibold text-ink mb-4">
             Position Size Adjustment
           </h3>
 
           {/* Base Position */}
           <div className="mb-3">
             <div className="flex justify-between items-center mb-1">
-              <span className="text-sm text-gray-600">Base Position (Standard Risk)</span>
-              <span className="text-sm font-mono text-gray-900">
+              <span className="text-sm text-ink-muted">Base Position (Standard Risk)</span>
+              <span className="text-sm font-mono text-ink">
                 {formatPositionSize(outputs.basePositionSize, inputs.instrumentType)}
               </span>
             </div>
-            <div className="h-8 bg-gray-200 rounded-lg flex items-center px-3">
-              <div className="flex-1 bg-blue-500 h-4 rounded" style={{ width: '100%' }}>
-                <span className="text-xs text-white font-medium px-2">100%</span>
+            <div className="h-8 bg-border rounded-[10px] flex items-center px-3">
+              <div className="flex-1 bg-brand h-4 rounded-[10px]" style={{ width: '100%' }}>
+                <span className="text-xs text-white font-semibold px-2">100%</span>
               </div>
             </div>
           </div>
@@ -109,7 +109,7 @@ export function VolatilityImpactCard() {
           <div className="flex items-center justify-center my-2">
             <svg
               className={`w-6 h-6 ${
-                isDecrease ? 'text-orange-500' : 'text-green-500'
+                isDecrease ? 'text-warning' : 'text-success'
               }`}
               fill="currentColor"
               viewBox="0 0 20 20"
@@ -121,7 +121,7 @@ export function VolatilityImpactCard() {
               />
             </svg>
             <span className={`ml-2 text-sm font-semibold ${
-              isDecrease ? 'text-orange-600' : 'text-green-600'
+              isDecrease ? 'text-warning' : 'text-success'
             }`}>
               {isIncrease ? '+' : ''}{adjustmentPct}% Adjustment
             </span>
@@ -130,21 +130,21 @@ export function VolatilityImpactCard() {
           {/* Adjusted Position */}
           <div>
             <div className="flex justify-between items-center mb-1">
-              <span className="text-sm font-semibold text-gray-900">
+              <span className="text-sm font-semibold text-ink">
                 Volatility-Adjusted Position
               </span>
-              <span className="text-sm font-mono font-bold text-purple-900">
+              <span className="text-sm font-mono font-bold text-brand">
                 {formatPositionSize(outputs.positionSize, inputs.instrumentType)}
               </span>
             </div>
-            <div className="h-8 bg-gray-200 rounded-lg flex items-center px-3">
+            <div className="h-8 bg-border rounded-[10px] flex items-center px-3">
               <div
-                className={`flex-1 h-4 rounded ${
-                  isDecrease ? 'bg-orange-500' : 'bg-green-500'
+                className={`flex-1 h-4 rounded-[10px] ${
+                  isDecrease ? 'bg-warning' : 'bg-success'
                 }`}
                 style={{ width: `${outputs.volatilityMultiplier * 100}%` }}
               >
-                <span className="text-xs text-white font-medium px-2">
+                <span className="text-xs text-white font-semibold px-2">
                   {outputs.volatilityMultiplier}x
                 </span>
               </div>
@@ -153,15 +153,15 @@ export function VolatilityImpactCard() {
         </div>
 
         {/* Explanation */}
-        <div className={`rounded-lg p-4 ${
+        <div className={`rounded-[10px] p-4 ${
           isDecrease
-            ? 'bg-orange-50 border border-orange-200'
-            : 'bg-green-50 border border-green-200'
+            ? 'bg-warning-bg border border-warning-border'
+            : 'bg-success-bg border border-border'
         }`}>
           <div className="flex items-start">
             <svg
               className={`h-5 w-5 mt-0.5 mr-3 flex-shrink-0 ${
-                isDecrease ? 'text-orange-600' : 'text-green-600'
+                isDecrease ? 'text-warning' : 'text-success'
               }`}
               fill="currentColor"
               viewBox="0 0 20 20"
@@ -174,11 +174,11 @@ export function VolatilityImpactCard() {
             </svg>
             <div>
               <h4 className={`text-sm font-semibold ${
-                isDecrease ? 'text-orange-900' : 'text-green-900'
+                isDecrease ? 'text-warning' : 'text-success'
               }`}>
                 {isDecrease ? 'Smaller Position for Higher Volatility' : 'Larger Position for Lower Volatility'}
               </h4>
-              <p className="text-sm text-gray-700 mt-1">
+              <p className="text-sm text-ink mt-1">
                 {isDecrease ? (
                   <>
                     Higher volatility instruments have larger price swings. To maintain consistent
@@ -198,8 +198,8 @@ export function VolatilityImpactCard() {
         </div>
 
         {/* Multiplier Reference */}
-        <div className="border-t pt-4">
-          <h4 className="text-xs font-semibold text-gray-600 mb-3">
+        <div className="border-t border-border pt-4">
+          <h4 className="text-xs font-semibold text-ink-muted mb-3">
             Volatility Multiplier Scale
           </h4>
           <div className="space-y-2">
@@ -208,12 +208,12 @@ export function VolatilityImpactCard() {
               return (
                 <div
                   key={key}
-                  className={`flex items-center justify-between text-xs py-1 px-2 rounded ${
-                    isActive ? 'bg-purple-100 font-semibold' : 'text-gray-600'
+                  className={`flex items-center justify-between text-xs py-1 px-2 rounded-[10px] ${
+                    isActive ? 'bg-brand-tint font-semibold' : 'text-ink-muted'
                   }`}
                 >
                   <span>{config.class.replace('_', ' ')}</span>
-                  <span className={isActive ? 'text-purple-900' : 'text-gray-500'}>
+                  <span className={isActive ? 'text-brand' : 'text-ink-muted'}>
                     {config.multiplier}x
                   </span>
                 </div>

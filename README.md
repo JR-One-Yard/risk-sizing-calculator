@@ -7,7 +7,7 @@
 ![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
@@ -21,7 +21,7 @@
 - [Deployment](#deployment)
 - [Disclaimer](#disclaimer)
 
-## 🎯 Overview
+## Overview
 
 The Risk Sizing Calculator v2 is a sophisticated tool designed for active traders who need precise position sizing calculations. It implements professional risk management principles including:
 
@@ -40,42 +40,42 @@ The Risk Sizing Calculator v2 is a sophisticated tool designed for active trader
 - **Exportable**: Save your trade plans as markdown files
 - **Fast**: Instant calculations as you type
 
-## ✨ Features
+## Features
 
 ### Core Calculation Engine
 
-- ✅ **Conviction-Based Risk Allocation**
+- **Conviction-Based Risk Allocation**
   - Type I (High): 5% base risk + 15% YTD scaling
   - Type II (Medium): 3% base risk + 10% YTD scaling
   - Type III (Low): 1% base risk + 5% YTD scaling
 
-- ✅ **Volatility-Adjusted Position Sizing** (NEW v2)
+- **Volatility-Adjusted Position Sizing** (NEW v2)
   - Ultra Low (<20% annualized): 2.0x position size
   - Low (20-40%): 1.5x position size
   - Medium (40-60%): 1.0x baseline
   - High (60-100%): 0.5x position size
   - Ultra High (>100%): 0.3x position size
 
-- ✅ **Risk Caps**
+- **Risk Caps**
   - Monthly stop loss protection (25% max)
   - Type III hard cap (10% of capital)
   - Absolute maximum (5% per trade)
 
-- ✅ **ATR Analysis**
+- **ATR Analysis**
   - Optimal stop placement recommendations
   - Stop distance in ATR multiples
   - Volatility warnings
 
 ### User Interface
 
-- ✅ **InputCard**: Clean, intuitive trade setup form
-- ✅ **OutputCard**: Comprehensive results with visual hierarchy
-- ✅ **VolatilityImpactCard**: Visual comparison of position sizes across volatility levels
-- ✅ **PolicyModal**: Configurable risk settings and multipliers
-- ✅ **LearnDrawer**: 9 educational articles on risk management
-- ✅ **CalculationBreakdownModal**: Step-by-step math transparency
-- ✅ **Export to Markdown**: Save trade plans for record-keeping
-- ✅ **Tooltips**: Contextual help on all inputs
+- **InputCard**: Clean, intuitive trade setup form
+- **OutputCard**: Comprehensive results with visual hierarchy
+- **VolatilityImpactCard**: Visual comparison of position sizes across volatility levels
+- **PolicyModal**: Configurable risk settings and multipliers
+- **LearnDrawer**: 9 educational articles on risk management
+- **CalculationBreakdownModal**: Step-by-step math transparency
+- **Export to Markdown**: Save trade plans for record-keeping
+- **Tooltips**: Contextual help on all inputs
 
 ### Educational Content
 
@@ -91,7 +91,7 @@ The calculator includes comprehensive educational materials:
 8. **Trade Management Plan**
 9. **Risk of Ruin**
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -136,7 +136,7 @@ The application will be available at `http://localhost:3000`
    - Click "Export" to save as markdown
    - Includes all calculations and trade management checklist
 
-## 📖 Usage Guide
+## Usage Guide
 
 ### Understanding Conviction Levels
 
@@ -197,7 +197,7 @@ Perfect for:
 - Regulatory compliance
 - Team collaboration
 
-## 🧮 Calculation Methodology
+## Calculation Methodology
 
 ### Position Sizing Formula
 
@@ -236,7 +236,7 @@ The volatility multiplier scales position size inversely with volatility:
 
 This maintains consistent dollar risk across instruments with different volatility profiles.
 
-## 🛠 Technology Stack
+## Technology Stack
 
 ### Frontend
 
@@ -259,7 +259,7 @@ This maintains consistent dollar risk across instruments with different volatili
 - **TypeScript strict mode** - Maximum type safety
 - **Git** - Version control
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 risk-sizing-calculator/
@@ -301,7 +301,7 @@ risk-sizing-calculator/
 
 ```
 
-## 💻 Development
+## Development
 
 ### Available Scripts
 
@@ -338,13 +338,13 @@ npm run lint         # Run ESLint
 4. **Create components** in `components/`
 5. **Update documentation** in README
 
-## 🧪 Testing
+## Testing
 
 The project has comprehensive test coverage:
 
 - **59 calculation tests** - Core position sizing logic
 - **59 validation tests** - Input validation and edge cases
-- **Total: 118 tests** - All passing ✅
+- **Total: 118 tests** - All passing
 
 Run tests:
 
@@ -359,7 +359,7 @@ Test files:
 - `lib/calculator/__tests__/spec-verification.test.ts`
 - `lib/__tests__/schemas.test.ts`
 
-## 🚢 Deployment
+## Deployment
 
 ### Vercel (Recommended)
 
@@ -385,7 +385,7 @@ npm run start
 
 No environment variables required for basic functionality. All settings are stored in browser localStorage.
 
-## ⚠️ Disclaimer
+## Disclaimer
 
 **IMPORTANT: This calculator is for educational purposes only.**
 
@@ -405,11 +405,11 @@ This software is provided "as is" without warranties or guarantees of any kind. 
 
 Before making any trading or investment decisions, consult with qualified financial advisors and perform your own due diligence.
 
-## 📄 License
+## License
 
 MIT License - see LICENSE file for details
 
-## 🤝 Contributing
+## Contributing
 
 Contributions welcome! Please:
 
@@ -419,14 +419,14 @@ Contributions welcome! Please:
 4. Ensure all tests pass
 5. Submit a pull request
 
-## 📞 Support
+## Support
 
 For issues, questions, or suggestions:
 
 - **GitHub Issues**: [Create an issue](https://github.com/yourusername/risk-sizing-calculator/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/yourusername/risk-sizing-calculator/discussions)
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 Built with:
 - Kelly Criterion principles for position sizing
@@ -435,6 +435,6 @@ Built with:
 
 ---
 
-**Made with ❤️ for traders who take risk management seriously**
+**Made for traders who take risk management seriously**
 
-*Last updated: October 25, 2025*
+*Last updated: October 27, 2025*

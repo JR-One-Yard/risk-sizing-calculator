@@ -75,7 +75,7 @@ export function LearnDrawer({ isOpen, onClose, initialArticleId }: LearnDrawerPr
 
   const ArticleNav = ({ articles, title }: { articles: Article[]; title: string }) => (
     <div className="mb-6">
-      <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+      <h3 className="text-xs font-semibold text-ink-muted uppercase tracking-wider mb-3">
         {title}
       </h3>
       <nav className="space-y-1">
@@ -83,10 +83,10 @@ export function LearnDrawer({ isOpen, onClose, initialArticleId }: LearnDrawerPr
           <button
             key={article.id}
             onClick={() => setSelectedArticleId(article.id)}
-            className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+            className={`w-full text-left px-3 py-2 rounded-[10px] text-sm transition-colors ${
               selectedArticleId === article.id
-                ? 'bg-blue-50 text-blue-900 font-semibold'
-                : 'text-gray-700 hover:bg-gray-100'
+                ? 'bg-brand-tint text-brand font-semibold'
+                : 'text-ink hover:bg-brand-tint'
             }`}
           >
             {article.title}
@@ -114,10 +114,10 @@ export function LearnDrawer({ isOpen, onClose, initialArticleId }: LearnDrawerPr
         tabIndex={-1}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-purple-50">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-gradient-to-r from-blue-50 to-purple-50">
           <div className="flex items-center space-x-3">
             <svg
-              className="w-6 h-6 text-blue-600"
+              className="w-6 h-6 text-brand"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -129,14 +129,14 @@ export function LearnDrawer({ isOpen, onClose, initialArticleId }: LearnDrawerPr
                 d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
               />
             </svg>
-            <h2 id="drawer-title" className="text-2xl font-bold text-gray-900">
+            <h2 id="drawer-title" className="text-2xl font-bold text-ink">
               Learn Risk Management
             </h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-2"
+            className="text-ink-muted hover:text-ink-muted focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-[10px] p-2"
             aria-label="Close drawer"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -153,15 +153,15 @@ export function LearnDrawer({ isOpen, onClose, initialArticleId }: LearnDrawerPr
         {/* Content */}
         <div className="flex-1 flex overflow-hidden">
           {/* Sidebar Navigation */}
-          <div className="w-64 border-r border-gray-200 overflow-y-auto p-6 bg-gray-50">
+          <div className="w-64 border-r border-border overflow-y-auto p-6 bg-bg-muted">
             <ArticleNav articles={basicsArticles} title="Basics" />
             <ArticleNav articles={volatilityArticles} title="Volatility (NEW v2)" />
             <ArticleNav articles={advancedArticles} title="Advanced" />
 
-            <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="mt-8 p-4 bg-brand-tint border border-border rounded-[10px]">
               <div className="flex items-start">
                 <svg
-                  className="h-5 w-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0"
+                  className="h-5 w-5 text-brand mt-0.5 mr-2 flex-shrink-0"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -171,7 +171,7 @@ export function LearnDrawer({ isOpen, onClose, initialArticleId }: LearnDrawerPr
                     clipRule="evenodd"
                   />
                 </svg>
-                <p className="text-xs text-gray-700">
+                <p className="text-xs text-ink">
                   <strong>Tip:</strong> Read the articles in order for the best learning
                   experience.
                 </p>
@@ -208,7 +208,7 @@ export function LearnDrawer({ isOpen, onClose, initialArticleId }: LearnDrawerPr
                 />
 
                 {/* Navigation Arrows */}
-                <div className="flex items-center justify-between mt-12 pt-8 border-t border-gray-200">
+                <div className="flex items-center justify-between mt-12 pt-8 border-t border-border">
                   <div>
                     {getPreviousArticle(selectedArticle.id) && (
                       <Button
@@ -263,7 +263,7 @@ export function LearnDrawer({ isOpen, onClose, initialArticleId }: LearnDrawerPr
               </article>
             ) : (
               <div className="flex items-center justify-center h-full">
-                <p className="text-gray-500">Select an article to read</p>
+                <p className="text-ink-muted">Select an article to read</p>
               </div>
             )}
           </div>
@@ -283,31 +283,31 @@ function formatArticleContent(content: string): string {
   return content
     .trim()
     // Headers
-    .replace(/^### (.+)$/gm, '<h3 class="text-xl font-bold text-gray-900 mt-8 mb-4">$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2 class="text-2xl font-bold text-gray-900 mt-10 mb-6">$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1 class="text-3xl font-bold text-gray-900 mb-8">$1</h1>')
+    .replace(/^### (.+)$/gm, '<h3 class="text-xl font-bold text-ink mt-8 mb-4">$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2 class="text-2xl font-bold text-ink mt-10 mb-6">$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1 class="text-3xl font-bold text-ink mb-8">$1</h1>')
     // Bold and emphasis
-    .replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-gray-900">$1</strong>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold text-ink">$1</strong>')
     .replace(/\*(.+?)\*/g, '<em class="italic">$1</em>')
     // Code blocks
-    .replace(/```([^`]+)```/g, '<pre class="bg-gray-100 border border-gray-200 rounded-lg p-4 my-4 overflow-x-auto"><code class="text-sm font-mono text-gray-800">$1</code></pre>')
+    .replace(/```([^`]+)```/g, '<pre class="bg-brand-tint border border-border rounded-[10px] p-4 my-4 overflow-x-auto"><code class="text-sm font-mono text-ink">$1</code></pre>')
     // Inline code
-    .replace(/`([^`]+)`/g, '<code class="bg-gray-100 text-sm font-mono text-blue-700 px-1.5 py-0.5 rounded">$1</code>')
+    .replace(/`([^`]+)`/g, '<code class="bg-brand-tint text-sm font-mono text-brand px-1.5 py-0.5 rounded">$1</code>')
     // Lists
     .replace(/^\- (.+)$/gm, '<li class="ml-4">$1</li>')
-    .replace(/(<li[\s\S]*?<\/li>)/, '<ul class="list-disc list-outside ml-6 my-4 space-y-2 text-gray-700">$1</ul>')
+    .replace(/(<li[\s\S]*?<\/li>)/, '<ul class="list-disc list-outside ml-6 my-4 space-y-2 text-ink">$1</ul>')
     // Checkmarks and crosses
-    .replace(/✅/g, '<span class="text-green-600 font-bold">✅</span>')
-    .replace(/❌/g, '<span class="text-red-600 font-bold">❌</span>')
+    .replace(/✅/g, '<span class="text-success font-bold">✅</span>')
+    .replace(/❌/g, '<span class="text-error font-bold">❌</span>')
     // Tables (basic support)
     .replace(/\|(.+)\|/g, (match) => {
       const cells = match.split('|').filter((cell) => cell.trim());
-      const cellsHtml = cells.map((cell) => `<td class="border border-gray-300 px-4 py-2">${cell.trim()}</td>`).join('');
+      const cellsHtml = cells.map((cell) => `<td class="border border-border px-4 py-2">${cell.trim()}</td>`).join('');
       return `<tr>${cellsHtml}</tr>`;
     })
     .replace(/(<tr>[\s\S]*?<\/tr>)+/, '<table class="table-auto border-collapse border border-gray-400 my-6 w-full">$&</table>')
     // Paragraphs
-    .replace(/^(?!<[h|u|p|t|d|l]|```|#)(.+)$/gm, '<p class="text-gray-700 leading-relaxed my-4">$1</p>')
+    .replace(/^(?!<[h|u|p|t|d|l]|```|#)(.+)$/gm, '<p class="text-ink leading-relaxed my-4">$1</p>')
     // Clean up extra whitespace
     .replace(/\n\n+/g, '\n');
 }

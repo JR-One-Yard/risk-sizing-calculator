@@ -1,6 +1,7 @@
 /**
  * Badge Component
  * Small status indicator or label
+ * Credit Suisse design system - Professional, muted colors
  */
 
 import { ReactNode } from 'react';
@@ -18,14 +19,14 @@ export function Badge({
   size = 'md',
   className = '',
 }: BadgeProps) {
-  const baseStyles = 'inline-flex items-center font-medium rounded-full';
+  const baseStyles = 'inline-flex items-center font-semibold rounded-[6px]';
 
   const variantStyles = {
-    neutral: 'bg-gray-100 text-gray-800',
-    info: 'bg-blue-100 text-blue-800',
-    success: 'bg-green-100 text-green-800',
-    warning: 'bg-yellow-100 text-yellow-800',
-    error: 'bg-red-100 text-red-800',
+    neutral: 'bg-brand-tint text-ink-muted',
+    info: 'bg-info-bg text-info',
+    success: 'bg-success-bg text-success',
+    warning: 'bg-warning-bg text-warning',
+    error: 'bg-error-bg text-error',
   };
 
   const sizeStyles = {

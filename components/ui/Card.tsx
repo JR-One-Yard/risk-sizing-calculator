@@ -1,6 +1,7 @@
 /**
  * Card Component
  * Foundation component for grouping content
+ * Credit Suisse design system - Professional banking aesthetic
  */
 
 import { ReactNode } from 'react';
@@ -12,11 +13,11 @@ export interface CardProps {
 }
 
 export function Card({ children, variant = 'default', className = '' }: CardProps) {
-  const baseStyles = 'rounded-lg bg-white border';
+  const baseStyles = 'rounded-[10px] bg-white border';
 
   const variantStyles = {
-    default: 'border-gray-200 shadow-sm',
-    elevated: 'border-gray-100 shadow-lg',
+    default: 'border-border shadow-sm',
+    elevated: 'border-border shadow-md',
   };
 
   return (
@@ -33,7 +34,7 @@ export interface CardHeaderProps {
 
 export function CardHeader({ children, className = '' }: CardHeaderProps) {
   return (
-    <div className={`px-6 py-4 border-b border-gray-200 ${className}`}>
+    <div className={`px-8 py-5 border-b border-border bg-bg-muted ${className}`}>
       {children}
     </div>
   );
@@ -46,7 +47,7 @@ export interface CardTitleProps {
 
 export function CardTitle({ children, className = '' }: CardTitleProps) {
   return (
-    <h3 className={`text-lg font-semibold text-gray-900 ${className}`}>
+    <h3 className={`text-lg font-semibold text-ink ${className}`}>
       {children}
     </h3>
   );
@@ -58,7 +59,7 @@ export interface CardContentProps {
 }
 
 export function CardContent({ children, className = '' }: CardContentProps) {
-  return <div className={`px-6 py-4 ${className}`}>{children}</div>;
+  return <div className={`px-8 py-5 ${className}`}>{children}</div>;
 }
 
 export interface CardFooterProps {
@@ -68,7 +69,7 @@ export interface CardFooterProps {
 
 export function CardFooter({ children, className = '' }: CardFooterProps) {
   return (
-    <div className={`px-6 py-4 border-t border-gray-200 bg-gray-50 rounded-b-lg ${className}`}>
+    <div className={`px-8 py-5 border-t border-border bg-bg-muted rounded-b-[10px] ${className}`}>
       {children}
     </div>
   );

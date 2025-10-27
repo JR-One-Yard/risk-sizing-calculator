@@ -58,10 +58,10 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="xl">
       <div className="p-6">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <h2 className="text-2xl font-bold text-ink mb-2">
           Calculation Breakdown
         </h2>
-        <p className="text-sm text-gray-600 mb-6">
+        <p className="text-sm text-ink-muted mb-6">
           Step-by-step explanation of how your position size was calculated
         </p>
 
@@ -69,41 +69,41 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
           {/* ============================================ */}
           {/* STEP 1: BASE RISK CALCULATION */}
           {/* ============================================ */}
-          <div className="border border-gray-200 rounded-lg p-5 bg-white">
+          <div className="border border-border rounded-[10px] p-5 bg-white">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-ink">
                 Step 1: Base Risk Calculation
               </h3>
               <Badge variant="info">Conviction-Based</Badge>
             </div>
 
             <div className="space-y-3 text-sm">
-              <div className="bg-blue-50 rounded p-3">
-                <p className="text-gray-700 mb-2">
+              <div className="bg-brand-tint rounded-[10px] p-3">
+                <p className="text-ink mb-2">
                   <strong>Conviction Level:</strong> {convictionConfig.label}
                 </p>
-                <p className="text-gray-600 text-xs">
+                <p className="text-ink-muted text-xs">
                   {convictionConfig.description}
                 </p>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <p className="text-gray-600">Base Risk %</p>
+                  <p className="text-ink-muted">Base Risk %</p>
                   <p className="font-mono font-semibold">{formatPercent(baseRiskPct)}</p>
                 </div>
                 <div>
-                  <p className="text-gray-600">Free Capital</p>
+                  <p className="text-ink-muted">Free Capital</p>
                   <p className="font-mono font-semibold">{formatCurrency(inputs.freeCapital)}</p>
                 </div>
               </div>
 
               <div className="pt-2 border-t">
-                <p className="text-gray-600">Base Risk Amount</p>
-                <p className="text-lg font-bold text-blue-900">
+                <p className="text-ink-muted">Base Risk Amount</p>
+                <p className="text-lg font-bold text-brand">
                   {formatCurrency(baseRiskAmount)}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-ink-muted mt-1">
                   = {formatPercent(baseRiskPct)} × {formatCurrency(inputs.freeCapital)}
                 </p>
               </div>
@@ -113,9 +113,9 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
           {/* ============================================ */}
           {/* STEP 2: YTD P&L SCALING */}
           {/* ============================================ */}
-          <div className="border border-gray-200 rounded-lg p-5 bg-white">
+          <div className="border border-border rounded-[10px] p-5 bg-white">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-ink">
                 Step 2: YTD P&L Scaling
               </h3>
               <Badge variant={inputs.ytdPnL > 0 ? 'success' : 'neutral'}>
@@ -126,22 +126,22 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
             <div className="space-y-3 text-sm">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <p className="text-gray-600">YTD P&L</p>
-                  <p className={`font-mono font-semibold ${inputs.ytdPnL >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                  <p className="text-ink-muted">YTD P&L</p>
+                  <p className={`font-mono font-semibold ${inputs.ytdPnL >= 0 ? 'text-success' : 'text-error'}`}>
                     {formatCurrency(inputs.ytdPnL)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-gray-600">YTD Scaling %</p>
+                  <p className="text-ink-muted">YTD Scaling %</p>
                   <p className="font-mono font-semibold">{formatPercent(ytdRiskPct)}</p>
                 </div>
               </div>
 
-              <div className="bg-green-50 rounded p-3">
-                <p className="text-gray-700 mb-1">
+              <div className="bg-success-bg rounded-[10px] p-3">
+                <p className="text-ink mb-1">
                   <strong>YTD Bonus:</strong> {formatCurrency(ytdBonus)}
                 </p>
-                <p className="text-xs text-gray-600">
+                <p className="text-xs text-ink-muted">
                   {inputs.ytdPnL > 0
                     ? `Winning trades increase position sizing (${formatPercent(ytdRiskPct)} of YTD gains)`
                     : 'No bonus when YTD is negative (preserves capital)'}
@@ -149,11 +149,11 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
               </div>
 
               <div className="pt-2 border-t">
-                <p className="text-gray-600">Total Risk (Before Caps)</p>
-                <p className="text-lg font-bold text-blue-900">
+                <p className="text-ink-muted">Total Risk (Before Caps)</p>
+                <p className="text-lg font-bold text-brand">
                   {formatCurrency(totalRiskBeforeCaps)}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-ink-muted mt-1">
                   = {formatCurrency(baseRiskAmount)} + {formatCurrency(ytdBonus)}
                 </p>
               </div>
@@ -163,9 +163,9 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
           {/* ============================================ */}
           {/* STEP 3: RISK CAPS */}
           {/* ============================================ */}
-          <div className="border border-gray-200 rounded-lg p-5 bg-white">
+          <div className="border border-border rounded-[10px] p-5 bg-white">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-ink">
                 Step 3: Risk Caps Applied
               </h3>
               <Badge variant={outputs.appliedCaps.length > 0 ? 'warning' : 'success'}>
@@ -177,10 +177,10 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
               {outputs.appliedCaps.length > 0 ? (
                 <>
                   {outputs.appliedCaps.map((cap, index) => (
-                    <div key={index} className="bg-yellow-50 border border-yellow-200 rounded p-3">
+                    <div key={index} className="bg-warning-bg border border-warning-border rounded p-3">
                       <div className="flex items-start">
                         <svg
-                          className="h-5 w-5 text-yellow-600 mt-0.5 mr-2 flex-shrink-0"
+                          className="h-5 w-5 text-warning mt-0.5 mr-2 flex-shrink-0"
                           fill="currentColor"
                           viewBox="0 0 20 20"
                         >
@@ -190,28 +190,28 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
                             clipRule="evenodd"
                           />
                         </svg>
-                        <p className="text-gray-700">{cap}</p>
+                        <p className="text-ink">{cap}</p>
                       </div>
                     </div>
                   ))}
                   <div className="pt-2 border-t">
-                    <p className="text-gray-600">Final Dollar Risk</p>
-                    <p className="text-lg font-bold text-red-700">
+                    <p className="text-ink-muted">Final Dollar Risk</p>
+                    <p className="text-lg font-bold text-error">
                       {formatCurrency(outputs.dollarRisk)}
                     </p>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-ink-muted mt-1">
                       Reduced from {formatCurrency(totalRiskBeforeCaps)} for safety
                     </p>
                   </div>
                 </>
               ) : (
-                <div className="bg-green-50 rounded p-3">
-                  <p className="text-gray-700">
+                <div className="bg-success-bg rounded p-3">
+                  <p className="text-ink">
                     ✓ No risk caps triggered. Your calculated risk is within all safety limits.
                   </p>
-                  <div className="mt-3 pt-3 border-t border-green-200">
-                    <p className="text-gray-600">Final Dollar Risk</p>
-                    <p className="text-lg font-bold text-green-700">
+                  <div className="mt-3 pt-3 border-t border-success-border">
+                    <p className="text-ink-muted">Final Dollar Risk</p>
+                    <p className="text-lg font-bold text-success">
                       {formatCurrency(outputs.dollarRisk)}
                     </p>
                   </div>
@@ -223,40 +223,40 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
           {/* ============================================ */}
           {/* STEP 4: POSITION SIZE CALCULATION */}
           {/* ============================================ */}
-          <div className="border border-gray-200 rounded-lg p-5 bg-white">
+          <div className="border border-border rounded-[10px] p-5 bg-white">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-ink">
                 Step 4: Position Size Calculation
               </h3>
               <Badge variant="info">Per-Share Risk</Badge>
             </div>
 
             <div className="space-y-3 text-sm">
-              <div className="bg-purple-50 rounded p-3">
+              <div className="bg-brand-tint rounded p-3">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-gray-600">Entry Price</p>
+                    <p className="text-ink-muted">Entry Price</p>
                     <p className="font-mono font-semibold">{formatCurrency(inputs.entryPrice)}</p>
                   </div>
                   <div>
-                    <p className="text-gray-600">Stop Loss</p>
+                    <p className="text-ink-muted">Stop Loss</p>
                     <p className="font-mono font-semibold">{formatCurrency(inputs.stopLoss)}</p>
                   </div>
                 </div>
-                <div className="mt-2 pt-2 border-t border-purple-200">
-                  <p className="text-gray-600">Risk per Share</p>
-                  <p className="font-mono font-semibold text-red-700">
+                <div className="mt-2 pt-2 border-t border-border">
+                  <p className="text-ink-muted">Risk per Share</p>
+                  <p className="font-mono font-semibold text-error">
                     {formatCurrency(riskPerShare)}
                   </p>
                 </div>
               </div>
 
               <div className="pt-2 border-t">
-                <p className="text-gray-600">Base Position Size</p>
-                <p className="text-lg font-bold text-blue-900">
+                <p className="text-ink-muted">Base Position Size</p>
+                <p className="text-lg font-bold text-brand">
                   {formatPositionSize(outputs.basePositionSize, inputs.instrumentType)}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-ink-muted mt-1">
                   = {formatCurrency(outputs.dollarRisk)} ÷ {formatCurrency(riskPerShare)}
                 </p>
               </div>
@@ -267,20 +267,20 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
           {/* STEP 5: VOLATILITY ADJUSTMENT */}
           {/* ============================================ */}
           {outputs.volatilityMultiplier !== 1.0 && (
-            <div className="border border-gray-200 rounded-lg p-5 bg-white">
+            <div className="border border-border rounded-[10px] p-5 bg-white">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="text-lg font-semibold text-ink">
                   Step 5: Volatility Adjustment
                 </h3>
                 <Badge variant="warning">NEW v2 Feature</Badge>
               </div>
 
               <div className="space-y-3 text-sm">
-                <div className="bg-amber-50 rounded p-3">
-                  <p className="text-gray-700 mb-2">
+                <div className="bg-warning-bg rounded p-3">
+                  <p className="text-ink mb-2">
                     <strong>Volatility Class:</strong> {inputs.volatilityClass}
                   </p>
-                  <p className="text-gray-600 text-xs">
+                  <p className="text-ink-muted text-xs">
                     {outputs.volatilityMultiplier > 1
                       ? 'Lower volatility allows larger position size'
                       : 'Higher volatility requires smaller position size for safety'}
@@ -289,12 +289,12 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-gray-600">Multiplier</p>
+                    <p className="text-ink-muted">Multiplier</p>
                     <p className="font-mono font-semibold">{outputs.volatilityMultiplier.toFixed(2)}x</p>
                   </div>
                   <div>
-                    <p className="text-gray-600">Adjustment</p>
-                    <p className={`font-mono font-semibold ${outputs.volatilityAdjustment && outputs.volatilityAdjustment > 0 ? 'text-green-700' : 'text-red-700'}`}>
+                    <p className="text-ink-muted">Adjustment</p>
+                    <p className={`font-mono font-semibold ${outputs.volatilityAdjustment && outputs.volatilityAdjustment > 0 ? 'text-success' : 'text-error'}`}>
                       {outputs.volatilityAdjustment
                         ? (outputs.volatilityAdjustment > 0 ? '+' : '') +
                           outputs.volatilityAdjustment.toFixed(getPositionPrecision(inputs.instrumentType, outputs.volatilityAdjustment)) +
@@ -305,11 +305,11 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
                 </div>
 
                 <div className="pt-2 border-t">
-                  <p className="text-gray-600">Volatility-Adjusted Position</p>
-                  <p className="text-lg font-bold text-purple-900">
+                  <p className="text-ink-muted">Volatility-Adjusted Position</p>
+                  <p className="text-lg font-bold text-ink">
                     {formatPositionSize(outputs.positionSize, inputs.instrumentType)}
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-ink-muted mt-1">
                     = {formatPositionSize(outputs.basePositionSize, inputs.instrumentType)} × {outputs.volatilityMultiplier.toFixed(2)}
                   </p>
                 </div>
@@ -320,45 +320,45 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
           {/* ============================================ */}
           {/* FINAL SUMMARY */}
           {/* ============================================ */}
-          <div className="border-2 border-blue-500 rounded-lg p-5 bg-blue-50">
-            <h3 className="text-lg font-semibold text-blue-900 mb-4">
+          <div className="border-2 border-focus rounded-[10px] p-5 bg-brand-tint">
+            <h3 className="text-lg font-semibold text-brand mb-4">
               Final Position Summary
             </h3>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-600">Position Size</p>
-                <p className="text-2xl font-bold text-blue-900">
+                <p className="text-sm text-ink-muted">Position Size</p>
+                <p className="text-2xl font-bold text-brand">
                   {formatPositionSize(outputs.positionSize, inputs.instrumentType)}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Position Value</p>
-                <p className="text-2xl font-bold text-blue-900">
+                <p className="text-sm text-ink-muted">Position Value</p>
+                <p className="text-2xl font-bold text-brand">
                   {formatCurrency(outputs.positionValue)}
                 </p>
-                <p className="text-xs text-gray-500">total investment</p>
+                <p className="text-xs text-ink-muted">total investment</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Dollar Risk (1R)</p>
-                <p className="text-xl font-bold text-red-700">
+                <p className="text-sm text-ink-muted">Dollar Risk (1R)</p>
+                <p className="text-xl font-bold text-error">
                   {formatCurrency(outputs.dollarRisk)}
                 </p>
-                <p className="text-xs text-gray-500">{formatPercent(outputs.riskPercentage)} of capital</p>
+                <p className="text-xs text-ink-muted">{formatPercent(outputs.riskPercentage)} of capital</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Potential Profit (2R)</p>
-                <p className="text-xl font-bold text-green-700">
+                <p className="text-sm text-ink-muted">Potential Profit (2R)</p>
+                <p className="text-xl font-bold text-success">
                   {formatCurrency(outputs.takeProfitValue)}
                 </p>
-                <p className="text-xs text-gray-500">at {formatCurrency(outputs.takeProfitPrice)}</p>
+                <p className="text-xs text-ink-muted">at {formatCurrency(outputs.takeProfitPrice)}</p>
               </div>
             </div>
           </div>
 
           {/* Educational Note */}
-          <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-            <p className="text-xs text-gray-600 leading-relaxed">
+          <div className="bg-bg-muted rounded-[10px] p-4 border border-border">
+            <p className="text-xs text-ink-muted leading-relaxed">
               <strong>Note:</strong> This breakdown shows the complete calculation process from conviction level
               to final position size. Each step builds on the previous one, with safety caps applied to protect
               your capital. The volatility adjustment (new in v2) ensures position sizes are appropriate for
@@ -371,7 +371,7 @@ export function CalculationBreakdownModal({ isOpen, onClose }: CalculationBreakd
         <div className="mt-6 flex justify-end">
           <button
             onClick={onClose}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+            className="px-6 py-2 bg-brand text-white rounded-[10px] hover:bg-brand transition-colors font-semibold"
           >
             Close
           </button>

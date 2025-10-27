@@ -5,17 +5,53 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, Badge, Button } from '@/components/ui';
 import { useRiskSizingStore } from '@/lib/store';
 import { exportTradePlan } from '@/lib/export';
 import { CalculationBreakdownModal } from './CalculationBreakdownModal';
+import { SaveTradeModal } from '@/components/journal/SaveTradeModal';
 import { formatPositionSize } from '@/lib/formatters';
 
 export function OutputCard() {
   const outputs = useRiskSizingStore((state) => state.outputs);
   const inputs = useRiskSizingStore((state) => state.inputs);
   const [isBreakdownOpen, setIsBreakdownOpen] = useState(false);
+  const [isSaveTradeOpen, setIsSaveTradeOpen] = useState(false);
+
+  // Stabilize inputs and outputs references for modal props
+  // Pass the entire object but only re-create when actual values change
+  // This prevents modal re-renders from parent component re-renders
+  const stableInputs = useMemo(() => inputs, [
+    inputs.freeCapital,
+    inputs.ytdPnL,
+    inputs.conviction,
+    inputs.direction,
+    inputs.entryPrice,
+    inputs.instrumentType,
+    inputs.stopLoss,
+    inputs.timeHorizon,
+    inputs.volatilityClass,
+    inputs.slippage,
+    inputs.instrumentMultiplier,
+  ]);
+
+  const stableOutputs = useMemo(() => outputs!, [
+    outputs?.positionSize,
+    outputs?.positionValue,
+    outputs?.dollarRisk,
+    outputs?.riskPercentage,
+    outputs?.takeProfitPrice,
+    outputs?.takeProfitValue,
+    outputs?.rMultiple?.current,
+    outputs?.rMultiple?.target,
+    outputs?.rMultiple?.breakeven,
+  ]);
+
+  // Stabilize callback functions
+  const handleCloseSaveModal = useCallback(() => {
+    setIsSaveTradeOpen(false);
+  }, []);
 
   const handleExport = () => {
     exportTradePlan(inputs, outputs);
@@ -28,9 +64,9 @@ export function OutputCard() {
           <CardTitle>Results</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12 text-ink-muted">
             <svg
-              className="mx-auto h-12 w-12 text-gray-400 mb-4"
+              className="mx-auto h-12 w-12 text-ink-muted mb-4"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -75,6 +111,28 @@ export function OutputCard() {
             <CardTitle>Results</CardTitle>
             <div className="flex space-x-2">
               <Button
+                variant="primary"
+                size="sm"
+                onClick={() => setIsSaveTradeOpen(true)}
+                className="flex items-center space-x-2"
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+                <span className="hidden sm:inline">Save to Journal</span>
+                <span className="sm:hidden">Save</span>
+              </Button>
+              <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsBreakdownOpen(true)}
@@ -93,7 +151,7 @@ export function OutputCard() {
                     d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
                   />
                 </svg>
-                <span>Details</span>
+                <span className="hidden sm:inline">Details</span>
               </Button>
               <Button
                 variant="secondary"
@@ -114,7 +172,7 @@ export function OutputCard() {
                     d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                   />
                 </svg>
-                <span>Export</span>
+                <span className="hidden sm:inline">Export</span>
               </Button>
             </div>
           </div>
@@ -122,29 +180,29 @@ export function OutputCard() {
       <CardContent>
         <div className="space-y-6">
           {/* Primary Results */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="bg-brand-tint border border-border rounded-[10px] p-4">
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-gray-700">Position Size</span>
-                <span className="text-2xl font-bold text-blue-900">
+                <span className="text-sm font-semibold text-ink-muted">Position Size</span>
+                <span className="text-2xl font-bold text-brand">
                   {formatPositionSize(outputs.positionSize, inputs.instrumentType)}
                 </span>
               </div>
               <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-600">Position Value</span>
-                <span className="font-semibold text-gray-900">
+                <span className="text-ink-muted">Position Value</span>
+                <span className="font-semibold text-ink">
                   {formatCurrency(outputs.positionValue)}
                 </span>
               </div>
               <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-600">Dollar Risk (1R)</span>
-                <span className="font-semibold text-red-700">
+                <span className="text-ink-muted">Dollar Risk (1R)</span>
+                <span className="font-semibold text-error">
                   {formatCurrency(outputs.dollarRisk)}
                 </span>
               </div>
               <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-600">Risk Percentage</span>
-                <span className="font-semibold text-gray-900">
+                <span className="text-ink-muted">Risk Percentage</span>
+                <span className="font-semibold text-ink">
                   {outputs.riskPercentage.toFixed(2)}%
                 </span>
               </div>
@@ -153,20 +211,20 @@ export function OutputCard() {
 
           {/* Take Profit */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">
+            <h3 className="text-sm font-semibold text-ink mb-3">
               Take Profit Target
             </h3>
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="bg-success-bg border border-border rounded-[10px] p-4">
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Target Price (2R)</span>
-                  <span className="text-lg font-bold text-green-900">
+                  <span className="text-sm text-ink-muted">Target Price (2R)</span>
+                  <span className="text-lg font-bold text-success">
                     {formatCurrency(outputs.takeProfitPrice)}
                   </span>
                 </div>
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-600">Target Profit</span>
-                  <span className="font-semibold text-green-700">
+                  <span className="text-ink-muted">Target Profit</span>
+                  <span className="font-semibold text-success">
                     {formatCurrency(outputs.takeProfitValue)}
                   </span>
                 </div>
@@ -176,21 +234,21 @@ export function OutputCard() {
 
           {/* R-Multiple Breakdown */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">
+            <h3 className="text-sm font-semibold text-ink mb-3">
               R-Multiple Targets
             </h3>
             <div className="space-y-2">
-              <div className="flex justify-between items-center text-sm py-2 border-b">
-                <span className="text-gray-600">Breakeven</span>
-                <span className="font-mono">{outputs.rMultiple.breakeven.toFixed(2)}R</span>
+              <div className="flex justify-between items-center text-sm py-2 border-b border-border">
+                <span className="text-ink-muted">Breakeven</span>
+                <span className="font-mono text-ink">{outputs.rMultiple.breakeven.toFixed(2)}R</span>
               </div>
-              <div className="flex justify-between items-center text-sm py-2 border-b">
-                <span className="text-gray-600">Current (Entry)</span>
-                <span className="font-mono">{outputs.rMultiple.current.toFixed(2)}R</span>
+              <div className="flex justify-between items-center text-sm py-2 border-b border-border">
+                <span className="text-ink-muted">Current (Entry)</span>
+                <span className="font-mono text-ink">{outputs.rMultiple.current.toFixed(2)}R</span>
               </div>
-              <div className="flex justify-between items-center text-sm py-2 border-b">
-                <span className="text-gray-600">Target</span>
-                <span className="font-mono font-bold text-green-700">
+              <div className="flex justify-between items-center text-sm py-2 border-b border-border">
+                <span className="text-ink-muted">Target</span>
+                <span className="font-mono font-bold text-success">
                   {outputs.rMultiple.target.toFixed(2)}R
                 </span>
               </div>
@@ -200,17 +258,17 @@ export function OutputCard() {
           {/* Volatility Adjustment */}
           {outputs.volatilityMultiplier !== 1.0 && (
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">
+              <h3 className="text-sm font-semibold text-ink mb-3">
                 Volatility Adjustment
               </h3>
-              <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
+              <div className="bg-brand-tint border border-border rounded-[10px] p-3">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-600">Multiplier Applied</span>
+                  <span className="text-ink-muted">Multiplier Applied</span>
                   <Badge variant="info">
                     {outputs.volatilityMultiplier}x
                   </Badge>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">
+                <p className="text-xs text-ink-muted mt-2">
                   Position size adjusted for instrument volatility
                 </p>
               </div>
@@ -220,18 +278,18 @@ export function OutputCard() {
           {/* Caps Applied */}
           {outputs.appliedCaps.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">
+              <h3 className="text-sm font-semibold text-ink mb-3">
                 Risk Caps Applied
               </h3>
               <div className="space-y-2">
                 {outputs.appliedCaps.map((cap, index) => (
                   <div
                     key={index}
-                    className="bg-yellow-50 border border-yellow-200 rounded-lg p-3"
+                    className="bg-warning-bg border border-warning-border rounded-[10px] p-3"
                   >
                     <div className="flex items-start">
                       <svg
-                        className="h-5 w-5 text-yellow-600 mt-0.5 mr-2"
+                        className="h-5 w-5 text-warning mt-0.5 mr-2"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -241,7 +299,7 @@ export function OutputCard() {
                           clipRule="evenodd"
                         />
                       </svg>
-                      <p className="text-sm text-gray-700">{cap}</p>
+                      <p className="text-sm text-ink">{cap}</p>
                     </div>
                   </div>
                 ))}
@@ -252,19 +310,19 @@ export function OutputCard() {
           {/* Alerts */}
           {outputs.alerts.length > 0 && (
             <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">
+              <h3 className="text-sm font-semibold text-ink mb-3">
                 Alerts
               </h3>
               <div className="space-y-2">
                 {outputs.alerts.map((alert, index) => (
                   <div
                     key={index}
-                    className={`rounded-lg p-3 ${
+                    className={`rounded-[10px] p-3 ${
                       alert.level === 'danger'
-                        ? 'bg-red-50 border border-red-200'
+                        ? 'bg-error-bg border border-error-border'
                         : alert.level === 'warning'
-                        ? 'bg-yellow-50 border border-yellow-200'
-                        : 'bg-blue-50 border border-blue-200'
+                        ? 'bg-warning-bg border border-warning-border'
+                        : 'bg-brand-tint border border-border'
                     }`}
                   >
                     <div className="flex items-start">
@@ -281,7 +339,7 @@ export function OutputCard() {
                       >
                         {alert.type}
                       </Badge>
-                      <p className="text-sm text-gray-700">{alert.message}</p>
+                      <p className="text-sm text-ink">{alert.message}</p>
                     </div>
                   </div>
                 ))}
@@ -296,6 +354,14 @@ export function OutputCard() {
     <CalculationBreakdownModal
       isOpen={isBreakdownOpen}
       onClose={() => setIsBreakdownOpen(false)}
+    />
+
+    {/* Save Trade Modal */}
+    <SaveTradeModal
+      isOpen={isSaveTradeOpen}
+      onClose={handleCloseSaveModal}
+      inputs={stableInputs}
+      outputs={stableOutputs}
     />
     </>
   );

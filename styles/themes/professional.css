@@ -1,0 +1,149 @@
+/**
+ * Professional Banking Theme
+ * Professional banking visual identity
+ * Swiss financial institution design standards
+ */
+
+:root {
+  /* ============================================
+   * PROFESSIONAL BRAND COLORS
+   * ============================================ */
+
+  /* Primary Brand Colors */
+  --cs-brand: #003662;           /* Deep Navy - Primary brand color */
+  --cs-brand-ink: #0b2239;       /* Near-black - Primary text on brand */
+  --cs-brand-tint: #e6eef6;      /* Light Blue Wash - Subtle backgrounds */
+
+  /* Neutral Colors */
+  --cs-bg: #ffffff;              /* Pure white - Main background */
+  --cs-bg-muted: #f5f7fa;        /* Light gray - Card backgrounds */
+  --cs-ink: #14202b;             /* Dark text - Primary text */
+  --cs-ink-muted: #4a5a6a;       /* Secondary text - Labels, captions */
+
+  /* Border Colors */
+  --cs-border: #ccd7e2;          /* Default borders */
+  --cs-border-strong: #9fb3c8;   /* Emphasized borders */
+  --cs-focus: #2b6da8;           /* Focus rings and active states */
+
+  /* ============================================
+   * STATUS COLORS (Muted for Professional Look)
+   * ============================================ */
+
+  /* Success (Green) - Muted for banking context */
+  --cs-success: #2e7d32;         /* Darker green for text */
+  --cs-success-bg: #e8f5e9;      /* Very light green background */
+  --cs-success-border: #81c784;  /* Medium green border */
+
+  /* Warning (Orange) - Muted amber */
+  --cs-warning: #f57c00;         /* Darker orange for text */
+  --cs-warning-bg: #fff8e1;      /* Very light yellow background */
+  --cs-warning-border: #ffb74d;  /* Medium orange border */
+
+  /* Error (Red) - Muted for professionalism */
+  --cs-error: #c62828;           /* Darker red for text */
+  --cs-error-bg: #ffebee;        /* Very light red background */
+  --cs-error-border: #e57373;    /* Medium red border */
+
+  /* Info (Blue) - Uses brand blue */
+  --cs-info: #2b6da8;            /* Brand-aligned blue */
+  --cs-info-bg: #e3f2fd;         /* Very light blue background */
+  --cs-info-border: #64b5f6;     /* Medium blue border */
+
+  /* ============================================
+   * RISK LEVEL COLORS (Professional Banking)
+   * ============================================ */
+
+  /* Conservative Risk Colors */
+  --cs-risk-safe: #2e7d32;       /* Green - Low risk */
+  --cs-risk-caution: #f57c00;    /* Orange - Medium risk */
+  --cs-risk-warning: #c62828;    /* Red - High risk */
+
+  /* ============================================
+   * VOLATILITY COLORS (Muted Scale)
+   * ============================================ */
+
+  --cs-vol-ultra-low: #003662;   /* Brand navy - Very stable */
+  --cs-vol-low: #2b6da8;         /* Mid blue - Stable */
+  --cs-vol-medium: #6b7280;      /* Gray - Moderate */
+  --cs-vol-high: #f57c00;        /* Orange - Volatile */
+  --cs-vol-ultra-high: #c62828;  /* Red - Very volatile */
+
+  /* ============================================
+   * TYPOGRAPHY
+   * ============================================ */
+
+  --cs-font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --cs-font-mono: 'Monaco', 'Courier New', monospace;
+
+  /* Font Weights */
+  --cs-font-normal: 400;
+  --cs-font-semibold: 600;       /* Reduced from 700 for sophistication */
+  --cs-font-bold: 700;
+
+  /* Line Heights */
+  --cs-line-height-tight: 1.25;
+  --cs-line-height-normal: 1.5;  /* Increased readability */
+  --cs-line-height-relaxed: 1.75;
+
+  /* Letter Spacing */
+  --cs-letter-spacing: -0.01em;  /* Slight tightening */
+
+  /* ============================================
+   * SPACING (Increased 33% for Professional Look)
+   * ============================================ */
+
+  --cs-spacing-xs: 0.5rem;       /* 8px */
+  --cs-spacing-sm: 1rem;         /* 16px */
+  --cs-spacing-md: 1.5rem;       /* 24px */
+  --cs-spacing-lg: 2rem;         /* 32px - Increased from 24px */
+  --cs-spacing-xl: 2.5rem;       /* 40px */
+  --cs-spacing-2xl: 3rem;        /* 48px */
+
+  /* Card Padding (Increased 33%) */
+  --cs-card-padding-x: 2rem;     /* 32px (was 24px) */
+  --cs-card-padding-y: 1.25rem;  /* 20px (was 16px) */
+
+  /* Form Spacing (Increased 50%) */
+  --cs-form-gap: 1.5rem;         /* 24px (was 16px) */
+
+  /* Section Gaps (Increased 33%) */
+  --cs-section-gap: 2rem;        /* 32px (was 24px) */
+
+  /* ============================================
+   * BORDER RADIUS
+   * ============================================ */
+
+  --cs-radius: 10px;             /* Standard radius */
+  --cs-radius-sm: 6px;           /* Small elements (badges, pills) */
+  --cs-radius-lg: 12px;          /* Large cards */
+  --cs-radius-full: 9999px;      /* Pills and circles */
+
+  /* ============================================
+   * SHADOWS (Minimized for Professional Look)
+   * ============================================ */
+
+  --cs-shadow-none: none;
+  --cs-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.03);    /* Very subtle */
+  --cs-shadow-md: 0 2px 4px 0 rgb(0 0 0 / 0.05);    /* Reduced */
+  --cs-shadow-lg: 0 4px 8px 0 rgb(0 0 0 / 0.07);    /* Reduced */
+  --cs-shadow-focus: 0 0 0 3px rgba(43, 109, 168, 0.15);  /* Focus ring */
+
+  /* ============================================
+   * TRANSITIONS
+   * ============================================ */
+
+  --cs-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --cs-transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --cs-transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ============================================
+   * Z-INDEX SCALE
+   * ============================================ */
+
+  --cs-z-base: 0;
+  --cs-z-dropdown: 1000;
+  --cs-z-sticky: 1100;
+  --cs-z-modal-backdrop: 1200;
+  --cs-z-modal: 1300;
+  --cs-z-tooltip: 1400;
+}

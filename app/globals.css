@@ -1,96 +1,124 @@
 @import "tailwindcss";
+@import "../styles/themes/professional.css";
 
 /**
- * Risk Sizing Tool v2 - Design System
- * Professional, accessible, risk-focused color palette
+ * Risk Sizing Tool v2 - Professional Design System
+ * Swiss banking-inspired visual identity
+ * Accessible, conservative, trustworthy
  */
 
 :root {
-  /* Base Colors */
-  --background: #ffffff;
-  --foreground: #1f2937;
+  /* Base Colors - Professional Theme */
+  --background: var(--cs-bg);
+  --foreground: var(--cs-ink);
 
-  /* Brand Colors */
-  --primary: #3b82f6;
-  --primary-dark: #2563eb;
+  /* Brand Colors - Professional Navy */
+  --primary: var(--cs-brand);
+  --primary-dark: var(--cs-brand-ink);
 
-  /* Risk Level Colors (Traffic Light System) */
-  --risk-safe: #10b981;
-  --risk-caution: #f59e0b;
-  --risk-warning: #ef4444;
+  /* Risk Level Colors (Professional Banking) */
+  --risk-safe: var(--cs-risk-safe);
+  --risk-caution: var(--cs-risk-caution);
+  --risk-warning: var(--cs-risk-warning);
 
-  /* Volatility Colors */
-  --vol-ultra-low: #3b82f6;
-  --vol-low: #06b6d4;
-  --vol-medium: #6b7280;
-  --vol-high: #f59e0b;
-  --vol-ultra-high: #ef4444;
+  /* Volatility Colors (Muted Scale) */
+  --vol-ultra-low: var(--cs-vol-ultra-low);
+  --vol-low: var(--cs-vol-low);
+  --vol-medium: var(--cs-vol-medium);
+  --vol-high: var(--cs-vol-high);
+  --vol-ultra-high: var(--cs-vol-ultra-high);
 
-  /* UI Colors */
-  --border: #e5e7eb;
-  --input: #f3f4f6;
-  --muted: #6b7280;
+  /* UI Colors - Credit Suisse Neutrals */
+  --border: var(--cs-border);
+  --input: var(--cs-bg-muted);
+  --muted: var(--cs-ink-muted);
 
-  /* Status Colors */
-  --success: #10b981;
-  --info: #3b82f6;
-  --warning: #f59e0b;
-  --error: #ef4444;
+  /* Status Colors - Muted Professional */
+  --success: var(--cs-success);
+  --info: var(--cs-info);
+  --warning: var(--cs-warning);
+  --error: var(--cs-error);
 }
 
 @theme inline {
-  /* Colors */
+  /* ===== COLORS ===== */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-primary-dark: var(--primary-dark);
 
+  /* Credit Suisse Brand Colors */
+  --color-brand: var(--cs-brand);
+  --color-brand-ink: var(--cs-brand-ink);
+  --color-brand-tint: var(--cs-brand-tint);
+
+  /* Neutrals */
+  --color-bg: var(--cs-bg);
+  --color-bg-muted: var(--cs-bg-muted);
+  --color-ink: var(--cs-ink);
+  --color-ink-muted: var(--cs-ink-muted);
+
+  /* Borders */
+  --color-border: var(--border);
+  --color-border-strong: var(--cs-border-strong);
+  --color-focus: var(--cs-focus);
+
+  /* Risk Colors */
   --color-risk-safe: var(--risk-safe);
   --color-risk-caution: var(--risk-caution);
   --color-risk-warning: var(--risk-warning);
 
+  /* Volatility Colors */
   --color-vol-ultra-low: var(--vol-ultra-low);
   --color-vol-low: var(--vol-low);
   --color-vol-medium: var(--vol-medium);
   --color-vol-high: var(--vol-high);
   --color-vol-ultra-high: var(--vol-ultra-high);
 
-  --color-border: var(--border);
+  /* UI Colors */
   --color-input: var(--input);
   --color-muted: var(--muted);
 
+  /* Status Colors */
   --color-success: var(--success);
+  --color-success-bg: var(--cs-success-bg);
   --color-info: var(--info);
+  --color-info-bg: var(--cs-info-bg);
   --color-warning: var(--warning);
+  --color-warning-bg: var(--cs-warning-bg);
   --color-error: var(--error);
+  --color-error-bg: var(--cs-error-bg);
 
-  /* Spacing (8px grid system) */
-  --spacing-xs: 0.5rem;
-  --spacing-sm: 1rem;
-  --spacing-md: 1.5rem;
-  --spacing-lg: 2rem;
-  --spacing-xl: 3rem;
+  /* ===== SPACING (Increased 33% for Professional Look) ===== */
+  --spacing-xs: var(--cs-spacing-xs);
+  --spacing-sm: var(--cs-spacing-sm);
+  --spacing-md: var(--cs-spacing-md);
+  --spacing-lg: var(--cs-spacing-lg);
+  --spacing-xl: var(--cs-spacing-xl);
+  --spacing-2xl: var(--cs-spacing-2xl);
 
-  /* Border Radius */
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
+  /* ===== BORDER RADIUS (Credit Suisse Standard: 10px) ===== */
+  --radius-sm: var(--cs-radius-sm);
+  --radius-md: var(--cs-radius);
+  --radius-lg: var(--cs-radius-lg);
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  /* ===== SHADOWS (Minimized for Professional Look) ===== */
+  --shadow-sm: var(--cs-shadow-sm);
+  --shadow-md: var(--cs-shadow-md);
+  --shadow-lg: var(--cs-shadow-lg);
 
-  /* Typography */
-  --font-sans: system-ui, -apple-system, sans-serif;
-  --font-mono: ui-monospace, monospace;
+  /* ===== TYPOGRAPHY (Helvetica Neue) ===== */
+  --font-sans: var(--cs-font-sans);
+  --font-mono: var(--cs-font-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  line-height: 1.5;
+  font-weight: var(--cs-font-normal);
+  line-height: var(--cs-line-height-normal);
+  letter-spacing: var(--cs-letter-spacing);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

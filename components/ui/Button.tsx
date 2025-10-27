@@ -24,17 +24,17 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseStyles =
-    'inline-flex items-center justify-center font-medium rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
+    'inline-flex items-center justify-center font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
 
   const variantStyles = {
     primary:
-      'bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500 active:bg-blue-800',
+      'bg-brand text-white hover:bg-brand-ink focus-visible:ring-focus active:bg-brand-ink rounded-[10px]',
     secondary:
-      'bg-gray-100 text-gray-900 hover:bg-gray-200 focus-visible:ring-gray-500 active:bg-gray-300',
+      'bg-brand-tint text-brand hover:bg-[#d4e3f0] focus-visible:ring-focus active:bg-[#c2d8ea] rounded-[10px]',
     ghost:
-      'text-gray-700 hover:bg-gray-100 focus-visible:ring-gray-500 active:bg-gray-200',
+      'text-brand hover:bg-brand-tint focus-visible:ring-focus active:bg-[#d4e3f0] rounded-[10px]',
     danger:
-      'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500 active:bg-red-800',
+      'bg-error text-white hover:bg-[#b71c1c] focus-visible:ring-error active:bg-[#a01010] rounded-[10px]',
   };
 
   const sizeStyles = {

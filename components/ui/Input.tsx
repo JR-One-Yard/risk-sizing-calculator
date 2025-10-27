@@ -1,6 +1,7 @@
 /**
  * Input Component
  * Accessible form input with label, error, and helper text
+ * Credit Suisse design system
  */
 
 import { InputHTMLAttributes, ReactNode, forwardRef } from 'react';
@@ -32,15 +33,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
+    const inputId = id || (label ? label.toLowerCase().replace(/\s+/g, '-') : undefined);
     const hasError = !!error;
 
     const baseStyles =
-      'block px-3 py-2 border rounded-md shadow-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0 disabled:opacity-50 disabled:bg-gray-50 disabled:cursor-not-allowed transition-colors';
+      'block px-3 py-2 border rounded-[10px] shadow-sm text-ink placeholder-border-strong focus:outline-none focus:ring-2 focus:ring-offset-0 disabled:opacity-50 disabled:bg-bg-muted disabled:cursor-not-allowed transition-colors';
 
     const stateStyles = hasError
-      ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
-      : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500';
+      ? 'border-error-border focus:border-error focus:ring-error'
+      : 'border-border focus:border-focus focus:ring-focus';
 
     const iconStyles = {
       left: leftIcon ? 'pl-10' : '',
@@ -54,7 +55,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="flex items-center gap-1 text-sm font-medium text-gray-700 mb-1"
+            className="flex items-center gap-1 text-sm font-semibold text-ink mb-1"
           >
             <span>{label}</span>
             {tooltip && <InfoTooltip content={tooltip} />}
@@ -63,7 +64,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
         <div className="relative">
           {leftIcon && (
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ink-muted">
               {leftIcon}
             </div>
           )}
@@ -84,20 +85,20 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           />
 
           {rightIcon && (
-            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-400">
+            <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-ink-muted">
               {rightIcon}
             </div>
           )}
         </div>
 
         {error && (
-          <p id={`${inputId}-error`} className="mt-1 text-sm text-red-600">
+          <p id={`${inputId}-error`} className="mt-1 text-sm text-error">
             {error}
           </p>
         )}
 
         {helperText && !error && (
-          <p id={`${inputId}-helper`} className="mt-1 text-sm text-gray-500">
+          <p id={`${inputId}-helper`} className="mt-1 text-sm text-ink-muted">
             {helperText}
           </p>
         )}
